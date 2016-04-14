@@ -7,9 +7,9 @@ import intersects
 pygame.init()
 
 # Window settings
-WIDTH = 900
-HEIGHT = 600
-TITLE = "Space Platformer"
+WIDTH = 1000
+HEIGHT = 800
+TITLE = "Escape the School"
 FPS = 60
 
 # Make the window
@@ -24,8 +24,6 @@ RED = (175, 0, 0)
 
 # Fonts
 FONT_SM = pygame.font.Font(None, 30)
-
-
 
 # Images
 astronaut_img = pygame.image.load("img/astronaut.png")

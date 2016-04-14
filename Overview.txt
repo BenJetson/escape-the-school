@@ -45,7 +45,7 @@ strikingly similar to J.L. Mann items.
 
 C. Features
 
-Running into a staff member will cause you
+Running into a staff member will c"ause you
 to be sent back to the basement.
 
 Running into a teacher will give you more
