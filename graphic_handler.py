@@ -2,10 +2,17 @@ import os
 import pygame
 
 
-def graphic_loader(path, mask_color):
+def graphic_loader(path, width=None, height=None, colorKey=None):
     image = pygame.image.load(os.path.abspath(path))
-    image.set_colorkey(mask_color)
-    return image.convert()
+
+    if colorKey:
+        image = image.set_colorkey(colorKey)
+        image = image.convert()
+
+    if width and height:
+        return pygame.transform.scale(image, width, height)
+
+    return image
 
 
 def graphic_resizer(image, percentage):
