@@ -1,4 +1,4 @@
-#  Space Game with platforms
+# Escape the School
 
 import pygame
 import random
