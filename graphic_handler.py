@@ -9,7 +9,9 @@ def graphic_loader(path, width=None, height=None, colorKey=None):
         image = image.set_colorkey(colorKey)
         image = image.convert()
 
-    if width and height:
+    if ((width and height) and
+            (width.isnumeric() and height.isnumeric()) and
+            (width > 0 and height > 0)):
         return pygame.transform.scale(image, width, height)
 
     return image
