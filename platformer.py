@@ -257,7 +257,7 @@ class Platform():
     def draw(self):
         pygame.draw.rect(screen, RED, [self.x, self.y, self.w, self.h])
 
-class Coin():
+class StudentProperty():
 
     def __init__(self, x, y, img):
         self.x = x
@@ -280,7 +280,12 @@ class Coin():
 platforms = [Platform(0, 250, 100, 10),
              Platform(0, 600, 100, 10),
              Platform(100, 375, 100, 10),
-             Platform(350, 600, 100, 10)]
+             Platform(350, 600, 100, 10),
+             Platform(500, 100, 100, 10),
+             Platform(700, 500, 100, 10),
+             Platform(900, 100, 100, 10)]
+
+pygame.draw.rect(screen, WHITE,[0, 700, 1000, 100])
 
 # Game stats
 score = 0
@@ -313,7 +318,8 @@ while not done:
     ufo.update()
  '''
     #drawing
-screen.fill(BLACK)
+#screen.fill(BLACK)
+
 '''
     stars.draw()
     planet.draw()
