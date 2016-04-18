@@ -1,8 +1,9 @@
-# Escape the School
+#  Escape the School
 
 import pygame
 import random
 import intersects
+from graphic_handler import *
 
 pygame.init()
 
@@ -26,26 +27,14 @@ RED = (175, 0, 0)
 FONT_SM = pygame.font.Font(None, 30)
 
 # Images
-astronaut_img = pygame.image.load("img/astronaut.png")
-ufo_img = pygame.image.load("img/ufo.png")
-planet_img = pygame.image.load("img/planet.png")
-ground_img = pygame.image.load("img/ground.jpg")
-coin_img = pygame.image.load("img/coin.png")
-monster_img = pygame.image.load("img/monster.png")
 
-astronaut_img = pygame.transform.scale(astronaut_img, [60, 75])
-ufo_img = pygame.transform.scale(ufo_img, [65, 65])
-planet_img = pygame.transform.scale(planet_img, [50, 50])
-ground_img = pygame.transform.scale(ground_img, [WIDTH, 100])
-coin_img = pygame.transform.scale(coin_img, [50, 50])
-monster_img = pygame.transform.scale(monster_img, [60, 75])
 
 # Physics
 H_SPEED = 4
 JUMP_POWER = 12
 GRAVITY = 0.4
 
-class SpaceMan():
+class Student():
 
     def __init__(self, x, y, img):
         self.x = x
@@ -65,9 +54,9 @@ class SpaceMan():
         
         self.y += 1
 
-        spaceman_rect = self.get_rect()
+        student_rect = self.get_rect()
                 
-        if intersects.rect_rect(spaceman_rect, ground.get_rect()):
+        if intersects.rect_rect(student_rect, ground.get_rect()):
             can_jump = True
     
         for p in platforms:
@@ -185,7 +174,7 @@ class Monster():
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
 
-
+'''
 class Ground():
     def __init__(self, x, y, img):
         self.x = x
@@ -199,7 +188,7 @@ class Ground():
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
-        
+  '''      
 class UFO():
 
     def __init__(self, x, y, img):
@@ -216,7 +205,7 @@ class UFO():
 
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
-              
+"""             
 class Planet():
 
     def __init__(self, x, y, img):
@@ -236,6 +225,8 @@ class Planet():
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
 
+"""
+"""
 class Stars():
 
     def __init__(self, num_stars):
@@ -250,6 +241,7 @@ class Stars():
     def draw(self):
         for s in self.stars:
             pygame.draw.circle(screen, WHITE, [s[0], s[1]], s[2])            
+"""
 
 class Platform():
 
@@ -285,36 +277,14 @@ class Coin():
 
 
 # Make game objects
-player = SpaceMan(470, 50, astronaut_img)
-ground = Ground(0, 500, ground_img)
-stars = Stars(300)
-planet = Planet(300, 125, planet_img)
-ufo = UFO(600, 50, ufo_img)
-
-p1 = Platform(600, 350, 100, 30)
-p2 = Platform(750, 200, 100, 30)
-p3 = Platform(75, 350, 100, 30)
-p4 = Platform(225, 200, 100, 30)
-p5 = Platform(400, 250, 100, 30)
-p6 = Platform(300, 375, 100, 30)
-platforms = [p1, p2, p3, p4, p5, p6]
-
-c1 = Coin(625, 275, coin_img)
-c2 = Coin(775, 125, coin_img)
-c3 = Coin(100, 275, coin_img)
-c4 = Coin(250, 125, coin_img)
-c5 = Coin(425, 175, coin_img)
-c6 = Coin(325, 300, coin_img)
-coins = [c1, c2, c3, c4, c5]
-
-m1 = Monster(400, 425, monster_img)
-m2 = Monster(650, 425, monster_img)
-m3 = Monster(325, 300, monster_img)
-monsters = [m1, m2, m3]
+platforms = [Platform(0, 250, 100, 10),
+             Platform(0, 600, 100, 10),
+             Platform(100, 375, 100, 10),
+             Platform(350, 600, 100, 10)]
 
 # Game stats
 score = 0
-
+'''
 # game loop
 done = False
 
@@ -341,18 +311,19 @@ while not done:
     # game logic
     player.update(ground, platforms)
     ufo.update()
- 
+ '''
     #drawing
-    screen.fill(BLACK)
+screen.fill(BLACK)
+'''
     stars.draw()
     planet.draw()
     ufo.draw()
     ground.draw()
     player.draw()
-
-    for p in platforms:
-        p.draw()
-
+'''
+for p in platforms:
+    p.draw()
+'''
     for c in coins:
         c.draw()
 
@@ -362,10 +333,10 @@ while not done:
     # Messages
     SCORE = FONT_SM.render("Score:" + format(score), True, WHITE)
     screen.blit(SCORE, [0, 0])
- 
+ '''
     # update screen
-    pygame.display.update()
-    clock.tick(FPS)
+pygame.display.update()
+clock.tick(FPS)
 
 # close window on quit
-pygame.quit ()
+#pygame.quit ()
