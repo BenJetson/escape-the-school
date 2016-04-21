@@ -226,11 +226,7 @@ class Belongings:
         screen.blit(self.img, [self.x, self.y])
 
 
-<<<<<<< HEAD
-class StudentProperty():
-=======
 class BackgroundObjects:
->>>>>>> bc1ea08d5b59c7a907593acb5c17f913eae70fde
 
     def __init__(self, x, y, img):
         self.x = x
@@ -251,16 +247,7 @@ class BackgroundObjects:
 
 # Make game objects
 platforms = [Platform(0, 250, 100, 10),
-<<<<<<< HEAD
-             Platform(0, 600, 100, 10),
-             Platform(100, 375, 100, 10),
-             Platform(350, 600, 100, 10),
-             Platform(500, 100, 100, 10),
-             Platform(700, 500, 100, 10),
-             Platform(900, 100, 100, 10)]
 
-pygame.draw.rect(screen, WHITE,[0, 700, 1000, 100])
-=======
              Platform(0, 475, 100, 10),
              Platform(125, 365, 100, 10),
              Platform(310, 550, 100, 10),
@@ -275,7 +262,6 @@ belongings = []
 teachers = []
 administrators = []
 bad_students = []
->>>>>>> bc1ea08d5b59c7a907593acb5c17f913eae70fde
 
 # Game stats
 score = 0
@@ -304,29 +290,6 @@ while not done:
     #     player.stop()
 
     # game logic
-<<<<<<< HEAD
-    player.update(ground, platforms)
-    ufo.update()
- '''
-    #drawing
-#screen.fill(BLACK)
-
-'''
-    stars.draw()
-    planet.draw()
-    ufo.draw()
-    ground.draw()
-    player.draw()
-'''
-for p in platforms:
-    p.draw()
-'''
-    for c in coins:
-        c.draw()
-
-    for m in monsters:
-        m.draw()
-=======
     # player.update(ground, platforms)
 
     # Draw game objects on-screen.
@@ -349,7 +312,6 @@ for p in platforms:
 
     for b in bad_students:
         b.draw()
->>>>>>> bc1ea08d5b59c7a907593acb5c17f913eae70fde
 
     # Messages
     SCORE = FONT_SM.render("Score:" + format(score), True, WHITE)
