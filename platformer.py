@@ -28,18 +28,17 @@ PASTEL_BLUE = ()
 FONT_SM = pygame.font.Font(None, 30)
 
 # Character Images
-# student_img = graphic_loader("img/student.png")
-# teacher_img = graphic_loader("img/teacher.png")
+student_img = graphic_loader("img/student.png")
+teacher_img = graphic_loader("img/teacher.png")
 # administrator_img = graphic_loader("img/admin.png")
 # bad_student_img = graphic_loader("img/bad_student.png")
 
 # Item Images
-# laptop_img = graphic_loader("img/laptop.png")
-# phone_img = graphic_loader("img/phone.png")
-# card_img = graphic_loader("img/playing_card.png")
-# staffbadge_img = graphic_loader("img/staff_badge.png")
-#
-# exit_img = graphic_loader("img/exit.png")
+laptop_img = graphic_loader("img/laptop.png")
+phone_img = graphic_loader("img/phone.png")
+card_img = graphic_loader("img/playing_card.png")
+staffbadge_img = graphic_loader("img/staff_badge.png")
+exit_img = graphic_loader("img/exit.png")
 
 # Physics
 H_SPEED = 4
