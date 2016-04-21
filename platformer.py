@@ -125,12 +125,12 @@ class Student:
             self.x = 0
         elif self.x + self.w > WIDTH:
             self.x = WIDTH - self.w
-
+    
     def check_ground(self, ground):
         if self.y + self.h > ground.y:
             self.y = ground.y - self.h
             self.vy = 0
-                
+                 
     def process_coins(self, coins):
         global score
         
@@ -157,13 +157,13 @@ class Student:
             if intersects.rect_rect(student_rect, monster_rect):
                     print("bonk!")
             
-    def update(self, ground, platforms):
+    def update(self, platforms):
         self.apply_gravity()
         self.process_platforms(platforms)
         self.check_screen_edges()
-        self.check_ground()
-        self.process_coins(coins)
-        self.process_monsters(monsters)
+        #self.check_ground()
+        #self.process_coins(coins)
+        #self.process_monsters(monsters)
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
@@ -246,8 +246,8 @@ class BackgroundObjects:
 
 
 # Make game objects
+student = Student(0, 250, student_img)
 platforms = [Platform(0, 250, 100, 10),
-
              Platform(0, 475, 100, 10),
              Platform(125, 365, 100, 10),
              Platform(310, 550, 100, 10),
@@ -275,23 +275,24 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
             
-        # elif event.type == pygame.KEYDOWN:
-        #     if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
-        #         player.jump(ground, platforms)
+        elif event.type == pygame.KEYDOWN:
+             if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+                 student.jump(ground, platforms)
             
 
     pressed = pygame.key.get_pressed()
     
-    # if pressed[pygame.K_RIGHT]:
-    #     player.move(H_SPEED)
-    # elif pressed[pygame.K_LEFT]:
-    #     player.move(-H_SPEED)
-    # else:
-    #     player.stop()
+    if pressed[pygame.K_RIGHT]:
+         student.move(H_SPEED)
+    elif pressed[pygame.K_LEFT]:
+         student.move(-H_SPEED)
+    else:
+         student.stop()
 
     # game logic
     # player.update(ground, platforms)
-
+    student.update(platforms)
+    
     # Draw game objects on-screen.
     screen.fill(BLACK)
 
@@ -313,6 +314,7 @@ while not done:
     for b in bad_students:
         b.draw()
 
+    student.draw()    
     # Messages
     SCORE = FONT_SM.render("Score:" + format(score), True, WHITE)
     screen.blit(SCORE, [0, 0])
