@@ -44,6 +44,7 @@ exit_img = graphic_loader("img/exit.png")
 H_SPEED = 4
 JUMP_POWER = 12
 GRAVITY = 0.4
+TERMINAL_VELOCITY = 10
 
 
 class Student:
@@ -90,7 +91,8 @@ class Student:
 
     def apply_gravity(self):
          self.vy += GRAVITY
-
+         self.vy = min(self.vy, TERMINAL_VELOCITY)
+         
     def process_platforms(self, platforms):
         self.x += self.vx
 
