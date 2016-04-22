@@ -256,7 +256,8 @@ platforms = [Platform(0, 250, 100, 10),
              Platform(0, 700, 100, 10),
              Platform(900, 700, 100, 10),
              Platform(450, 700, 100, 10),
-             Platform(850, 100, 150, 10)]
+             Platform(850, 100, 150, 10),
+             Platform(0, 710, 1000, 90)]
 background_objects = []
 belongings = []
 teachers = []
