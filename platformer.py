@@ -61,15 +61,15 @@ class Student:
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
 
-    def jump(self, ground, platforms):
+    def jump(self, platforms):
         can_jump = False
         
         self.y += 1
 
         student_rect = self.get_rect()
                 
-        if intersects.rect_rect(student_rect, ground.get_rect()):
-            can_jump = True
+        #if intersects.rect_rect(student_rect, ground.get_rect()):
+            #can_jump = True
     
         for p in platforms:
             platform_rect = p.get_rect()
@@ -277,7 +277,7 @@ while not done:
             
         elif event.type == pygame.KEYDOWN:
              if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
-                 student.jump(ground, platforms)
+                 student.jump(platforms)
             
 
     pressed = pygame.key.get_pressed()
