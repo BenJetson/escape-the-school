@@ -150,13 +150,13 @@ class Student:
         for c in coins_to_remove:
             coins.remove(c)
 
-    def process_monsters(self, monsters):
+    def process_teachers(self, teachers):
         student_rect = self.get_rect()
 
-        for m in monsters:
-            monster_rect = m.get_rect()
+        for t in teachers:
+            teachers_rect = t.get_rect()
 
-            if intersects.rect_rect(student_rect, monster_rect):
+            if intersects.rect_rect(student_rect, teachers_rect):
                     print("bonk!")
             
     def update(self, platforms):
@@ -165,7 +165,7 @@ class Student:
         self.check_screen_edges()
         #self.check_ground()
         #self.process_coins(coins)
-        #self.process_monsters(monsters)
+        self.process_teachers(teachers)
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
@@ -262,7 +262,7 @@ platforms = [Platform(0, 250, 100, 10),
              Platform(0, 710, 1000, 90)]
 background_objects = []
 belongings = []
-teachers = []
+teachers = [OtherPeople(0, 400, teacher_img)]
 administrators = []
 bad_students = []
 
