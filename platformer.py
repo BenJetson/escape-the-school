@@ -21,6 +21,8 @@ clock = pygame.time.Clock()
 # Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+LIGHT_GREY = (220, 220, 220)
+DARKER_GREY = (150, 150, 150)
 RED = (175, 0, 0)
 PASTEL_BLUE = ()
 
@@ -262,7 +264,7 @@ platforms = [Platform(0, 250, 100, 10),
              Platform(0, 710, 1000, 90)]
 background_objects = []
 belongings = []
-teachers = [OtherPeople(0, 400, teacher_img)]
+teachers = [OtherPeople(0, 411, teacher_img)]
 administrators = []
 bad_students = []
 
@@ -297,7 +299,7 @@ while not done:
     student.update(platforms)
     
     # Draw game objects on-screen.
-    screen.fill(BLACK)
+    screen.fill(DARKER_GREY)
 
     for b in background_objects:
         b.draw()
