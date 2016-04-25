@@ -175,18 +175,61 @@ class Student:
 
 class OtherPeople:
 
-    def __init__(self, x, y, img):
+    def __init__(self, x, y, img, vx=1, platform_bound=True):
         self.x = x
         self.y = y
         self.img = img
         self.w = self.img.get_width()
         self.h = self.img.get_height()
-        
-        self.vx = 0
+        self.platform_bound = platform_bound
+
+        self.vx = vx
         self.vy = 0
 
+    def move_and_process_platforms(self, platforms):
+        self.x += self.vx
+
+        person_rect = self.get_rect()
+
+        for p in platforms:
+            platform_rect = p.get_rect()
+
+            if intersects.rect_rect(person_rect, platform_rect):
+                if self.vx > 0:
+                    self.x = p.x - self.w
+                    self.vx *= -1
+                elif self.vx < 0:
+                    self.x = p.x + p.w
+                    self.vx *= -1
+
+            if self.platform_bound:
+                if (person_rect[0] == platform_rect[0] and
+                        platform_rect[1] == person_rect[1] + person_rect[3]
+                        and self.vx == -1):
+                    self.vx *= -1
+                elif (person_rect[0] + person_rect[2] == platform_rect[0] + platform_rect[2] and
+                      person_rect[1] + person_rect[3] == platform_rect[1] and
+                      self.vx == 1):
+                    self.vx *= -1
+
+
+        self.y += self.vy
+
+        person_rect = self.get_rect()
+
+        for p in platforms:
+            platform_rect = p.get_rect()
+
+            if intersects.rect_rect(person_rect, platform_rect):
+                if self.vy > 0:
+                    self.y = p.y - self.h
+                if self.vy < 0:
+                    self.y = p.y + p.h
+                self.vy = 0
+
+
     def update(self, platforms):
-        pass
+        self.move_and_process_platforms(platforms)
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
@@ -297,7 +340,10 @@ while not done:
     # game logic
     # player.update(ground, platforms)
     student.update(platforms)
-    
+
+    for t in teachers:
+        t.update(platforms)
+
     # Draw game objects on-screen.
     screen.fill(DARKER_GREY)
 
