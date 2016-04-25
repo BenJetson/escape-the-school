@@ -60,6 +60,7 @@ class Student:
         
         self.vx = 0
         self.vy = 0
+        self.speed = H_SPEED
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
@@ -155,13 +156,23 @@ class Student:
     def process_teachers(self, teachers):
         student_rect = self.get_rect()
 
+        is_touching = False
+            
         for t in teachers:
             teachers_rect = t.get_rect()
 
             if intersects.rect_rect(student_rect, teachers_rect):
                     print("bonk!")
+                    is_touching = True
+
+        if is_touching:
+            self.speed = H_SPEED - 1
+        else:
+            self.speed = H_SPEED
             
-    def update(self, platforms):
+        print(self.speed)
+        
+    def update(self, platforms, teachers):
         self.apply_gravity()
         self.process_platforms(platforms)
         self.check_screen_edges()
@@ -331,15 +342,15 @@ while not done:
     pressed = pygame.key.get_pressed()
     
     if pressed[pygame.K_RIGHT]:
-         student.move(H_SPEED)
+         student.move(student.speed)
     elif pressed[pygame.K_LEFT]:
-         student.move(-H_SPEED)
+         student.move(-student.speed)
     else:
          student.stop()
 
     # game logic
     # player.update(ground, platforms)
-    student.update(platforms)
+    student.update(platforms, teachers)
 
     for t in teachers:
         t.update(platforms)
