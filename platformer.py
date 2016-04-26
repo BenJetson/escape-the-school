@@ -32,7 +32,7 @@ FONT_SM = pygame.font.Font(None, 30)
 # Character Images
 student_img = graphic_loader("img/student.png")
 teacher_img = graphic_loader("img/teacher.png")
-administrator_img = graphic_loader("img/admin.png")
+admin_img = graphic_loader("img/admin.png")
 bad_student_img = graphic_loader("img/bad_student.png")
 
 # Item Images
@@ -172,14 +172,14 @@ class Student:
             
         #print(self.speed)
 
-    def process_admin(self, administrators):
+    def process_admin(self, admin):
         student_rect = self.get_rect()
             
-        for a in administrators:
-            administrators_rect = a.get_rect()
+        for a in admin:
+            admin_rect = a.get_rect()
 
-            if intersects.rect_rect(student_rect, administrators_rect):
-                    print("bonk!")
+            if intersects.rect_rect(student_rect, admin_rect):
+                    print("ahh!")
         
     def update(self, platforms, teachers):
         self.apply_gravity()
@@ -188,7 +188,7 @@ class Student:
         #self.check_ground()
         #self.process_coins(coins)
         self.process_teachers(teachers)
-        self.process_admin(administrators)
+        self.process_admin(admin)
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
@@ -329,7 +329,7 @@ platforms = [Platform(0, 250, 100, 10),
 background_objects = []
 belongings = []
 teachers = [OtherPeople(0, 411, teacher_img)]
-administrators = [OtherPeople(0, 186, administrator_img)]
+admin = [OtherPeople(0, 186, admin_img)]
 bad_students = []
 
 # Game stats
@@ -377,7 +377,7 @@ while not done:
     for b in belongings:
         b.draw()
 
-    for a in administrators:
+    for a in admin:
         a.draw()
 
     for t in teachers:
