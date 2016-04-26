@@ -34,8 +34,8 @@ FONT_SM = pygame.font.Font(None, 30)
 # Character Images
 student_img = graphic_loader("img/student.png")
 teacher_img = graphic_loader("img/teacher.png")
-# administrator_img = graphic_loader("img/admin.png")
-# bad_student_img = graphic_loader("img/bad_student.png")
+admin_img = graphic_loader("img/admin.png")
+bad_student_img = graphic_loader("img/bad_student.png")
 
 # Item Images
 laptop_img = graphic_loader("img/laptop.png")
@@ -179,7 +179,7 @@ class Student:
                     # is_touching = True
 
                     self.change_speed_temp(get_current_time() + 5, H_SPEED/2)
-            
+
         print(self.speed)
 
     def process_speed_changes(self):
@@ -194,7 +194,28 @@ class Student:
 
         self.speed = 1 if self.speed < 1 else self.speed
 
-    def update(self, platforms, teachers):
+        #print(self.speed)
+
+    def process_admin(self, admin):
+        student_rect = self.get_rect()
+            
+        for a in admin:
+            admin_rect = a.get_rect()
+
+            if intersects.rect_rect(student_rect, admin_rect):
+                    print("ahh!")
+
+    def process_bad_student(self, bad_student):
+        student_rect = self.get_rect()
+            
+        for b in bad_student:
+            bad_student_rect = b.get_rect()
+
+            if intersects.rect_rect(student_rect, bad_student_rect):
+                    print("ugh")
+
+        
+    def update(self, platforms, teachers, admin, bad_students):
         self.process_speed_changes()
         self.apply_gravity()
         self.process_platforms(platforms)
@@ -202,6 +223,8 @@ class Student:
         #self.check_ground()
         #self.process_coins(coins)
         self.process_teachers(teachers)
+        self.process_admin(admin)
+        self.process_bad_student(bad_student)
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
@@ -361,11 +384,12 @@ platforms = [Platform(0, 250, 100, 10),
 background_objects = []
 belongings = []
 teachers = [OtherPeople(0, 411, teacher_img)]
-administrators = []
-bad_students = []
+admin = [OtherPeople(0, 186, admin_img)]
+bad_student = [OtherPeople(125, 301, bad_student_img)]
 
 # Game stats
 score = 0
+
 
 # game loop
 done = False
@@ -392,10 +416,16 @@ while not done:
 
     # game logic
     # player.update(ground, platforms)
-    student.update(platforms, teachers)
+    student.update(platforms, teachers, admin, bad_student)
 
     for t in teachers:
         t.update(platforms)
+
+    for a in admin:
+        a.update(platforms)
+
+    for b in bad_student:
+        b.update(platforms)    
 
     # Draw game objects on-screen.
     screen.fill(DARKER_GREY)
@@ -409,13 +439,13 @@ while not done:
     for b in belongings:
         b.draw()
 
-    for a in administrators:
+    for a in admin:
         a.draw()
 
     for t in teachers:
         t.draw()
 
-    for b in bad_students:
+    for b in bad_student:
         b.draw()
 
     student.draw()    
