@@ -32,8 +32,8 @@ FONT_SM = pygame.font.Font(None, 30)
 # Character Images
 student_img = graphic_loader("img/student.png")
 teacher_img = graphic_loader("img/teacher.png")
-# administrator_img = graphic_loader("img/admin.png")
-# bad_student_img = graphic_loader("img/bad_student.png")
+administrator_img = graphic_loader("img/admin.png")
+bad_student_img = graphic_loader("img/bad_student.png")
 
 # Item Images
 laptop_img = graphic_loader("img/laptop.png")
@@ -170,7 +170,16 @@ class Student:
         else:
             self.speed = H_SPEED
             
-        print(self.speed)
+        #print(self.speed)
+
+    def process_admin(self, administrators):
+        student_rect = self.get_rect()
+            
+        for a in administrators:
+            administrators_rect = a.get_rect()
+
+            if intersects.rect_rect(student_rect, administrators_rect):
+                    print("bonk!")
         
     def update(self, platforms, teachers):
         self.apply_gravity()
@@ -179,6 +188,7 @@ class Student:
         #self.check_ground()
         #self.process_coins(coins)
         self.process_teachers(teachers)
+        self.process_admin(administrators)
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
@@ -319,7 +329,7 @@ platforms = [Platform(0, 250, 100, 10),
 background_objects = []
 belongings = []
 teachers = [OtherPeople(0, 411, teacher_img)]
-administrators = []
+administrators = [OtherPeople(0, 186, administrator_img)]
 bad_students = []
 
 # Game stats
