@@ -180,6 +180,16 @@ class Student:
 
             if intersects.rect_rect(student_rect, admin_rect):
                     print("ahh!")
+
+    def process_bad_student(self, bad_student):
+        student_rect = self.get_rect()
+            
+        for b in bad_student:
+            bad_student_rect = b.get_rect()
+
+            if intersects.rect_rect(student_rect, bad_student_rect):
+                    print("ugh")
+
         
     def update(self, platforms, teachers):
         self.apply_gravity()
@@ -189,7 +199,7 @@ class Student:
         #self.process_coins(coins)
         self.process_teachers(teachers)
         self.process_admin(admin)
-        
+        self.process_bad_student(bad_student)
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
 
@@ -330,10 +340,11 @@ background_objects = []
 belongings = []
 teachers = [OtherPeople(0, 411, teacher_img)]
 admin = [OtherPeople(0, 186, admin_img)]
-bad_students = []
+bad_student = [OtherPeople(125, 301, bad_student_img)]
 
 # Game stats
 score = 0
+
 
 # game loop
 done = False
@@ -383,7 +394,7 @@ while not done:
     for t in teachers:
         t.draw()
 
-    for b in bad_students:
+    for b in bad_student:
         b.draw()
 
     student.draw()    
