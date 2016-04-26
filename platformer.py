@@ -2,8 +2,6 @@
 
 import pygame
 import random
-import calendar
-import time
 import intersects
 from graphic_handler import *
 
@@ -51,10 +49,6 @@ GRAVITY = 0.4
 TERMINAL_VELOCITY = 10
 
 
-def get_current_time():
-    return calendar.timegm(time.gmtime())
-
-
 class Student:
 
     def __init__(self, x, y, img):
@@ -67,7 +61,6 @@ class Student:
         self.vx = 0
         self.vy = 0
         self.speed = H_SPEED
-        self.temp_speed_changes = []
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
@@ -100,15 +93,9 @@ class Student:
         self.vx = 0
 
     def apply_gravity(self):
-        self.vy += GRAVITY
-        self.vy = min(self.vy, TERMINAL_VELOCITY)
-
-    def change_speed_temp(self, expiry_time, amount):
-        self.temp_speed_changes.append({
-            "expiryTime" : expiry_time,
-            "changeAmount" : amount
-        });
-
+         self.vy += GRAVITY
+         self.vy = min(self.vy, TERMINAL_VELOCITY)
+         
     def process_platforms(self, platforms):
         self.x += self.vx
 
@@ -169,31 +156,20 @@ class Student:
     def process_teachers(self, teachers):
         student_rect = self.get_rect()
 
-        # is_touching = False
+        is_touching = False
             
         for t in teachers:
             teachers_rect = t.get_rect()
 
-            if t.is_touching(student_rect):
+            if intersects.rect_rect(student_rect, teachers_rect):
                     print("bonk!")
-                    # is_touching = True
+                    is_touching = True
 
-                    self.change_speed_temp(get_current_time() + 5, H_SPEED/2)
-
-        print(self.speed)
-
-    def process_speed_changes(self):
-        self.speed = H_SPEED
-        current_time = get_current_time()
-
-        for p in self.temp_speed_changes:
-            if not (p['expiryTime'] < current_time):
-                self.speed -= p['changeAmount']
-            else:
-                self.temp_speed_changes.remove(p)
-
-        self.speed = 1 if self.speed < 1 else self.speed
-
+        if is_touching:
+            self.speed = H_SPEED - 1
+        else:
+            self.speed = H_SPEED
+            
         #print(self.speed)
 
     def process_admin(self, admin):
@@ -216,7 +192,6 @@ class Student:
 
         
     def update(self, platforms, teachers, admin, bad_students):
-        self.process_speed_changes()
         self.apply_gravity()
         self.process_platforms(platforms)
         self.check_screen_edges()
@@ -239,22 +214,9 @@ class OtherPeople:
         self.w = self.img.get_width()
         self.h = self.img.get_height()
         self.platform_bound = platform_bound
-        self.is_untouchable = False
-        self.last_touch = 0
 
         self.vx = vx
         self.vy = 0
-
-    def is_touching(self, other_rect, dont_set_flag=False, ignore_untouchable=False):
-        if (not self.is_untouchable) or ignore_untouchable:
-            if intersects.rect_rect(self.get_rect(), other_rect):
-                if not dont_set_flag:
-                    self.is_untouchable = True
-                    self.last_touch = get_current_time()
-
-                return True
-
-        return False
 
     def move_and_process_platforms(self, platforms):
         self.x += self.vx
@@ -297,12 +259,8 @@ class OtherPeople:
                     self.y = p.y + p.h
                 self.vy = 0
 
-    def process_touchability(self):
-        if self.last_touch + 5 == get_current_time():
-            self.is_untouchable = False
 
     def update(self, platforms):
-        self.process_touchability()
         self.move_and_process_platforms(platforms)
 
     def get_rect(self):
@@ -330,7 +288,7 @@ class Platform:
 
 class Belongings:
 
-    def __init__(self, x, y, img, is_visible=True, can_collect=True):
+    def __init__(self, x, y, img):
         self.x = x
         self.y = y
         self.img = img
@@ -338,15 +296,13 @@ class Belongings:
         self.w = self.img.get_width()
         self.h = self.img.get_height()
 
-        self.is_visible = is_visible
-        self.can_collect = can_collect
+        self.value = 1
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
 
     def draw(self):
-        if self.is_visible:
-            screen.blit(self.img, [self.x, self.y])
+        screen.blit(self.img, [self.x, self.y])
 
 
 class BackgroundObjects:
@@ -381,7 +337,7 @@ platforms = [Platform(0, 250, 100, 10),
              Platform(450, 700, 100, 10),
              Platform(850, 100, 150, 10),
              Platform(0, 710, 1000, 90)]
-background_objects = []
+background_objects = [BackgroundObjects(950, 0, exit_img)]
 belongings = []
 teachers = [OtherPeople(0, 411, teacher_img)]
 admin = [OtherPeople(0, 186, admin_img)]
