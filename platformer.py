@@ -191,7 +191,7 @@ class Student:
                     print("ugh")
 
         
-    def update(self, platforms, teachers):
+    def update(self, platforms, teachers, admin, bad_students):
         self.apply_gravity()
         self.process_platforms(platforms)
         self.check_screen_edges()
@@ -200,6 +200,7 @@ class Student:
         self.process_teachers(teachers)
         self.process_admin(admin)
         self.process_bad_student(bad_student)
+        
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
 
@@ -371,10 +372,16 @@ while not done:
 
     # game logic
     # player.update(ground, platforms)
-    student.update(platforms, teachers)
+    student.update(platforms, teachers, admin, bad_student)
 
     for t in teachers:
         t.update(platforms)
+
+    for a in admin:
+        a.update(platforms)
+
+    for b in bad_student:
+        b.update(platforms)    
 
     # Draw game objects on-screen.
     screen.fill(DARKER_GREY)
