@@ -267,7 +267,7 @@ class Platform:
 
 class Belongings:
 
-    def __init__(self, x, y, img):
+    def __init__(self, x, y, img, is_visible=True, can_collect=True):
         self.x = x
         self.y = y
         self.img = img
@@ -275,13 +275,15 @@ class Belongings:
         self.w = self.img.get_width()
         self.h = self.img.get_height()
 
-        self.value = 1
+        self.is_visible = is_visible
+        self.can_collect = can_collect
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
 
     def draw(self):
-        screen.blit(self.img, [self.x, self.y])
+        if self.is_visible:
+            screen.blit(self.img, [self.x, self.y])
 
 
 class BackgroundObjects:
