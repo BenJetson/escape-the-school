@@ -138,6 +138,16 @@ class Student:
                     self.y = p.y + p.h
                     self.vy = 0
 
+    def process_bad_students(self, bad_students):
+     student_rect = self.get_rect()
+
+     for b in bad_students:
+         bad_student_rect = b.get_rect()
+
+         if intersects.rect_rect(student_rect, bad_student_rect):
+                 print("ugh")
+
+
     def process_admins(self, admins):
         student_rect = self.get_rect()
 
@@ -203,7 +213,7 @@ class Student:
 
         self.speed = 1 if self.speed < 1 else self.speed
 
-    def update(self, platforms, teachers, admins):
+    def update(self, platforms, teachers, admins, bad_students):
         self.process_speed_changes()
         self.apply_gravity()
         self.process_platforms(platforms)
@@ -212,6 +222,7 @@ class Student:
         #self.process_coins(coins)
         self.process_teachers(teachers)
         self.process_admins(admins)
+        self.process_bad_students(bad_students)
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
@@ -372,7 +383,7 @@ background_objects = [BackgroundObjects(950, 0, exit_img)]
 belongings = []
 teachers = [OtherPeople(0, 411, teacher_img)]
 admins = [OtherPeople(0, 186, admin_img)]
-bad_students = []
+bad_students = [OtherPeople(125, 301, bad_student_img)]
 
 # Game stats
 score = 0
@@ -402,10 +413,16 @@ while not done:
 
     # game logic
     # player.update(ground, platforms)
-    student.update(platforms, teachers, admins)
+    student.update(platforms, teachers, admins,bad_students)
 
     for t in teachers:
         t.update(platforms)
+
+    for a in admins:
+        a.update(platforms)
+
+    for b in bad_students:
+        b.update(platforms)
 
     # Draw game objects on-screen.
     screen.fill(DARKER_GREY)
