@@ -382,7 +382,8 @@ platforms = [Platform(0, 250, 100, 10),
 background_objects = [BackgroundObjects(950, 0, exit_img)]
 belongings = [Belongings(475, 300, laptop_img),
               Belongings(475, 650, phone_img),
-              Belongings(25, 430, staffbadge_img)]
+              Belongings(25, 440, staffbadge_img),
+              Belongings(25, 210, card_img)]
 teachers = [OtherPeople(0, 411, teacher_img)]
 admins = [OtherPeople(0, 186, admin_img)]
 bad_students = [OtherPeople(125, 301, bad_student_img)]
