@@ -2,6 +2,8 @@
 
 import pygame
 import random
+import calendar
+import time
 import intersects
 from graphic_handler import *
 
@@ -32,8 +34,8 @@ FONT_SM = pygame.font.Font(None, 30)
 # Character Images
 student_img = graphic_loader("img/student.png")
 teacher_img = graphic_loader("img/teacher.png")
-admin_img = graphic_loader("img/admin.png")
-bad_student_img = graphic_loader("img/bad_student.png")
+# administrator_img = graphic_loader("img/admin.png")
+# bad_student_img = graphic_loader("img/bad_student.png")
 
 # Item Images
 laptop_img = graphic_loader("img/laptop.png")
@@ -49,6 +51,10 @@ GRAVITY = 0.4
 TERMINAL_VELOCITY = 10
 
 
+def get_current_time():
+    return calendar.timegm(time.gmtime())
+
+
 class Student:
 
     def __init__(self, x, y, img):
@@ -61,6 +67,7 @@ class Student:
         self.vx = 0
         self.vy = 0
         self.speed = H_SPEED
+        self.temp_speed_changes = []
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
@@ -93,9 +100,15 @@ class Student:
         self.vx = 0
 
     def apply_gravity(self):
-         self.vy += GRAVITY
-         self.vy = min(self.vy, TERMINAL_VELOCITY)
-         
+        self.vy += GRAVITY
+        self.vy = min(self.vy, TERMINAL_VELOCITY)
+
+    def change_speed_temp(self, expiry_time, amount):
+        self.temp_speed_changes.append({
+            "expiryTime" : expiry_time,
+            "changeAmount" : amount
+        });
+
     def process_platforms(self, platforms):
         self.x += self.vx
 
@@ -156,50 +169,39 @@ class Student:
     def process_teachers(self, teachers):
         student_rect = self.get_rect()
 
-        is_touching = False
+        # is_touching = False
             
         for t in teachers:
             teachers_rect = t.get_rect()
 
-            if intersects.rect_rect(student_rect, teachers_rect):
+            if t.is_touching(student_rect):
                     print("bonk!")
-                    is_touching = True
+                    # is_touching = True
 
-        if is_touching:
-            self.speed = H_SPEED - 1
-        else:
-            self.speed = H_SPEED
+                    self.change_speed_temp(get_current_time() + 5, H_SPEED/2)
             
-        #print(self.speed)
+        print(self.speed)
 
-    def process_admin(self, admin):
-        student_rect = self.get_rect()
-            
-        for a in admin:
-            admin_rect = a.get_rect()
+    def process_speed_changes(self):
+        self.speed = H_SPEED
+        current_time = get_current_time()
 
-            if intersects.rect_rect(student_rect, admin_rect):
-                    print("ahh!")
+        for p in self.temp_speed_changes:
+            if not (p['expiryTime'] < current_time):
+                self.speed -= p['changeAmount']
+            else:
+                self.temp_speed_changes.remove(p)
 
-    def process_bad_student(self, bad_student):
-        student_rect = self.get_rect()
-            
-        for b in bad_student:
-            bad_student_rect = b.get_rect()
+        self.speed = 1 if self.speed < 1 else self.speed
 
-            if intersects.rect_rect(student_rect, bad_student_rect):
-                    print("ugh")
-
-        
-    def update(self, platforms, teachers, admin, bad_students):
+    def update(self, platforms, teachers):
+        self.process_speed_changes()
         self.apply_gravity()
         self.process_platforms(platforms)
         self.check_screen_edges()
         #self.check_ground()
         #self.process_coins(coins)
         self.process_teachers(teachers)
-        self.process_admin(admin)
-        self.process_bad_student(bad_student)
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
@@ -214,9 +216,22 @@ class OtherPeople:
         self.w = self.img.get_width()
         self.h = self.img.get_height()
         self.platform_bound = platform_bound
+        self.is_untouchable = False
+        self.last_touch = 0
 
         self.vx = vx
         self.vy = 0
+
+    def is_touching(self, other_rect, dont_set_flag=False, ignore_untouchable=False):
+        if (not self.is_untouchable) or ignore_untouchable:
+            if intersects.rect_rect(self.get_rect(), other_rect):
+                if not dont_set_flag:
+                    self.is_untouchable = True
+                    self.last_touch = get_current_time()
+
+                return True
+
+        return False
 
     def move_and_process_platforms(self, platforms):
         self.x += self.vx
@@ -259,8 +274,12 @@ class OtherPeople:
                     self.y = p.y + p.h
                 self.vy = 0
 
+    def process_touchability(self):
+        if self.last_touch + 5 == get_current_time():
+            self.is_untouchable = False
 
     def update(self, platforms):
+        self.process_touchability()
         self.move_and_process_platforms(platforms)
 
     def get_rect(self):
@@ -288,7 +307,7 @@ class Platform:
 
 class Belongings:
 
-    def __init__(self, x, y, img):
+    def __init__(self, x, y, img, is_visible=True, can_collect=True):
         self.x = x
         self.y = y
         self.img = img
@@ -296,13 +315,15 @@ class Belongings:
         self.w = self.img.get_width()
         self.h = self.img.get_height()
 
-        self.value = 1
+        self.is_visible = is_visible
+        self.can_collect = can_collect
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
 
     def draw(self):
-        screen.blit(self.img, [self.x, self.y])
+        if self.is_visible:
+            screen.blit(self.img, [self.x, self.y])
 
 
 class BackgroundObjects:
@@ -340,12 +361,11 @@ platforms = [Platform(0, 250, 100, 10),
 background_objects = [BackgroundObjects(950, 0, exit_img)]
 belongings = []
 teachers = [OtherPeople(0, 411, teacher_img)]
-admin = [OtherPeople(0, 186, admin_img)]
-bad_student = [OtherPeople(125, 301, bad_student_img)]
+administrators = []
+bad_students = []
 
 # Game stats
 score = 0
-
 
 # game loop
 done = False
@@ -372,16 +392,10 @@ while not done:
 
     # game logic
     # player.update(ground, platforms)
-    student.update(platforms, teachers, admin, bad_student)
+    student.update(platforms, teachers)
 
     for t in teachers:
         t.update(platforms)
-
-    for a in admin:
-        a.update(platforms)
-
-    for b in bad_student:
-        b.update(platforms)    
 
     # Draw game objects on-screen.
     screen.fill(DARKER_GREY)
@@ -395,13 +409,13 @@ while not done:
     for b in belongings:
         b.draw()
 
-    for a in admin:
+    for a in administrators:
         a.draw()
 
     for t in teachers:
         t.draw()
 
-    for b in bad_student:
+    for b in bad_students:
         b.draw()
 
     student.draw()    
@@ -415,4 +429,3 @@ while not done:
 
 # close window on quit
 pygame.quit()
-
