@@ -145,7 +145,7 @@ class Student:
             admin_rect = a.get_rect()
 
             if intersects.rect_rect(student_rect, admin_rect):
-                print("bonk - admin")
+                print("ahh!")
 
     def check_screen_edges(self):
         if self.x < 0:
@@ -402,7 +402,7 @@ while not done:
 
     # game logic
     # player.update(ground, platforms)
-    student.update(platforms, teachers)
+    student.update(platforms, teachers, admins)
 
     for t in teachers:
         t.update(platforms)
