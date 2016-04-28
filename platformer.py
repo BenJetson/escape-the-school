@@ -363,6 +363,9 @@ def setup():
     stage = START
 
 
+# Initialize variables
+setup()
+
 while not done:
     # event handling
     for event in pygame.event.get():
