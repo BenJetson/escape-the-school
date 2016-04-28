@@ -330,34 +330,38 @@ class BackgroundObjects:
 
 
 # Make game objects
-student = Student(0, 250, student_img)
-platforms = [Platform(0, 250, 100, 10),
-             Platform(0, 475, 100, 10),
-             Platform(125, 365, 100, 10),
-             Platform(310, 550, 100, 10),
-             Platform(580, 550, 100, 10),
-             Platform(450, 350, 100, 10),
-             Platform(0, 700, 100, 10),
-             Platform(900, 700, 100, 10),
-             Platform(450, 700, 100, 10),
-             Platform(850, 100, 150, 10),
-             Platform(0, 710, 1000, 90)]
-background_objects = [BackgroundObjects(950, 0, exit_img)]
-belongings = [Belongings(475, 300, laptop_img),
-              Belongings(475, 650, phone_img),
-              Belongings(25, 440, staffbadge_img),
-              Belongings(25, 210, card_img)]
-teachers = [OtherPeople(0, 411, teacher_img)]
-admin = [OtherPeople(0, 186, admin_img)]
-bad_student = [OtherPeople(125, 301, bad_student_img)]
 
-# Game stats
-score = 0
+def setup():
+    global student, platforms, background_objects, belongings, teachers, admins, bad_student, done, score, stage
 
+    student = Student(0, 250, student_img)
+    platforms = [Platform(0, 250, 100, 10),
+                 Platform(0, 475, 100, 10),
+                 Platform(125, 365, 100, 10),
+                 Platform(310, 550, 100, 10),
+                 Platform(580, 550, 100, 10),
+                 Platform(450, 350, 100, 10),
+                 Platform(0, 700, 100, 10),
+                 Platform(900, 700, 100, 10),
+                 Platform(450, 700, 100, 10),
+                 Platform(850, 100, 150, 10),
+                 Platform(0, 710, 1000, 90)]
+    background_objects = [BackgroundObjects(950, 0, exit_img)]
+    belongings = [Belongings(475, 300, laptop_img),
+                  Belongings(475, 650, phone_img),
+                  Belongings(25, 440, staffbadge_img),
+                  Belongings(25, 210, card_img)]
+    teachers = [OtherPeople(0, 411, teacher_img)]
+    admins = [OtherPeople(0, 186, admin_img)]
+    bad_student = [OtherPeople(125, 301, bad_student_img)]
 
-# game loop
-done = False
-stage = START
+    # Game stats
+    score = 0
+
+    # game loop
+    done = False
+    stage = START
+
 
 while not done:
     # event handling
@@ -388,12 +392,12 @@ while not done:
     # game logic
     # player.update(ground, platforms)
     if stage == PLAYING:
-        student.update(platforms, teachers, admin, bad_student)
+        student.update(platforms, teachers, admins, bad_student)
 
         for t in teachers:
             t.update(platforms)
 
-        for a in admin:
+        for a in admins:
             a.update(platforms)
 
         for b in bad_student:
@@ -420,7 +424,7 @@ while not done:
         for b in belongings:
             b.draw()
 
-        for a in admin:
+        for a in admins:
             a.draw()
 
         for t in teachers:
