@@ -34,6 +34,9 @@ START = 0
 PLAYING = 1
 END = 2
 
+# Other Documents
+
+
 # Character Images
 student_img = graphic_loader("img/student.png")
 teacher_img = graphic_loader("img/teacher.png")
