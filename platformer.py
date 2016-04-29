@@ -331,6 +331,13 @@ class BackgroundObjects:
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
 
+def load_instructions(path):
+
+    path = 'Open.txt'
+
+    with open(path, 'r')as f:
+        opening = f.read()
+
 
 # Make game objects
 
@@ -442,11 +449,6 @@ while not done:
         student.draw()
 
         screen.blit(SCORE, [0, 0])
-
-
-        
-
-    screen.blit(SCORE, [0, 0])
 
     # update screen
     pygame.display.update()
