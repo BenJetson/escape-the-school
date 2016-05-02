@@ -331,12 +331,13 @@ class BackgroundObjects:
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
 
-def load_instructions(path):
+def load_config():
 
-    path = 'Open.txt'
+    global opening_text
 
-    with open(path, 'r')as f:
-        opening = f.read()
+    # Load opening text from disk.
+    with open('Open.txt', 'r')as f:
+        opening_text = f.read()
 
 # Make game objects
 
@@ -374,6 +375,7 @@ def setup():
 
 # Initialize variables
 setup()
+load_config()
 
 while not done:
     # event handling
