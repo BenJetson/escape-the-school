@@ -336,8 +336,20 @@ def load_config():
     global opening_text
 
     # Load opening text from disk.
-    with open('Open.txt', 'r')as f:
-        opening_text = f.read()
+    f = open('Open.txt')
+    lines = f.readlines()
+    f.close()
+
+
+
+    textrect = text.get_rect()
+    textrect.centerx = screen.get_rect().centerx
+    textrect.centery = scrren.get_rect().centery
+
+    for i in lines:
+        OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE)
+        textrect.centery += 50
+
 
 # Make game objects
 
@@ -425,7 +437,7 @@ while not done:
     # Draw game objects on-screen.
     if stage == START:
         screen.fill(DARKER_GREY)
-        screen.blit(START_TEXT, [295, 200])
+        screen.blit(OPENING_TEXT, [295, 200])
 
     elif stage == PLAYING:
         screen.fill(DARKER_GREY)
