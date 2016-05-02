@@ -338,7 +338,6 @@ def load_instructions(path):
     with open(path, 'r')as f:
         opening = f.read()
 
-
 # Make game objects
 
 def setup():
