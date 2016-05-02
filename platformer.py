@@ -198,8 +198,21 @@ class Student:
             if intersects.rect_rect(student_rect, bad_student_rect):
                     print("ugh")
 
-        
-    def update(self, platforms, teachers, admin, bad_students):
+    def process_belongings(self, belongings, inventory):
+
+        student_rect = self.get_rect()
+
+        for b in belongings:
+            if b.is_collectible:
+                item_rect = b.get_rect()
+
+                if intersects.rect_rect(student_rect, item_rect):
+                    inventory.append(b)
+                    belongings.remove(b)
+
+                    belongings[0].activate()
+
+    def update(self, platforms, teachers, admin, bad_students, belongings, inventory):
         self.apply_gravity()
         self.process_platforms(platforms)
         self.check_screen_edges()
@@ -207,7 +220,8 @@ class Student:
         #self.process_coins(coins)
         self.process_teachers(teachers)
         self.process_admin(admin)
-        self.process_bad_student(bad_student)
+        self.process_bad_student(bad_students)
+        self.process_belongings(belongings, inventory)
         
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
@@ -296,15 +310,28 @@ class Platform:
 
 class Belongings:
 
-    def __init__(self, x, y, img):
+    def __init__(self, x, y, img, is_visible=False, is_collectible=False):
         self.x = x
         self.y = y
         self.img = img
+
+        self.is_visible = is_visible
+        self.is_collectible = is_collectible
 
         self.w = self.img.get_width()
         self.h = self.img.get_height()
 
         self.value = 1
+
+    def set_visibility(self, status):
+        self.is_visible = status
+
+    def set_collectibility(self, status):
+        self.is_collectible = status
+
+    def activate(self):
+        self.is_collectible = True
+        self.is_visible = True
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
@@ -343,7 +370,9 @@ def load_config():
 # Make game objects
 
 def setup():
-    global student, platforms, background_objects, belongings, teachers, admins, bad_student, done, score, stage
+    global student, platforms, background_objects, \
+        belongings, teachers, admins, bad_students, \
+        done, score, stage, inventory
 
     student = Student(0, 250, student_img)
     platforms = [Platform(0, 250, 100, 10),
@@ -364,7 +393,10 @@ def setup():
                   Belongings(25, 210, card_img)]
     teachers = [OtherPeople(0, 411, teacher_img)]
     admins = [OtherPeople(0, 186, admin_img)]
-    bad_student = [OtherPeople(125, 301, bad_student_img)]
+    bad_students = [OtherPeople(125, 301, bad_student_img)]
+    inventory = []
+
+    belongings[0].activate()
 
     # Game stats
     score = 0
@@ -408,7 +440,7 @@ while not done:
     # game logic
     # player.update(ground, platforms)
     if stage == PLAYING:
-        student.update(platforms, teachers, admins, bad_student)
+        student.update(platforms, teachers, admins, bad_students, belongings, inventory)
 
         for t in teachers:
             t.update(platforms)
@@ -416,7 +448,7 @@ while not done:
         for a in admins:
             a.update(platforms)
 
-        for b in bad_student:
+        for b in bad_students:
             b.update(platforms)    
 
  # Messages
@@ -438,7 +470,8 @@ while not done:
             p.draw()
 
         for b in belongings:
-            b.draw()
+            if b.is_visible:
+                b.draw()
 
         for a in admins:
             a.draw()
@@ -446,9 +479,12 @@ while not done:
         for t in teachers:
             t.draw()
 
-        for b in bad_student:
+        for b in bad_students:
             b.draw()
-            
+
+        for i in inventory:
+            i.draw()
+
         student.draw()
 
         screen.blit(SCORE, [0, 0])
