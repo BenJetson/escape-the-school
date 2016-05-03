@@ -414,24 +414,23 @@ class BackgroundObjects:
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
 
+
 def load_config():
 
-    global opening_text
+    global OPENING_TEXT
 
     # Load opening text from disk.
     f = open('Open.txt')
     lines = f.readlines()
     f.close()
 
+    # text_rect = text.get_rect()
+    # text_rect.center_x = screen.get_rect().centerx
+    # text_rect.center_y = screen.get_rect().centery
 
-
-    textrect = text.get_rect()
-    textrect.centerx = screen.get_rect().centerx
-    textrect.centery = scrren.get_rect().centery
-
-    for i in lines:
-        OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE)
-        textrect.centery += 50
+    # for i in lines:
+    #     OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE)
+    #     text_rect.center_y += 50
 
 
 # Make game objects
