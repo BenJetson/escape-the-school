@@ -524,7 +524,7 @@ while not done:
     # Draw game objects on-screen.
     if stage == START:
         screen.fill(DARKER_GREY)
-        screen.blit(OPENING_TEXT, [295, 200])
+        # screen.blit(OPENING_TEXT, [295, 200])
 
     elif stage == PLAYING:
         screen.fill(DARKER_GREY)
