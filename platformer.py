@@ -56,6 +56,9 @@ JUMP_POWER = 12
 GRAVITY = 0.4
 TERMINAL_VELOCITY = 10
 
+def fix_inventory(inventory):
+    pass
+
 
 class Student:
 
@@ -207,10 +210,12 @@ class Student:
                 item_rect = b.get_rect()
 
                 if intersects.rect_rect(student_rect, item_rect):
-                    inventory.append(b)
                     belongings.remove(b)
+                    inventory.append(b)
+                    fix_inventory(inventory)
 
-                    belongings[0].activate()
+                    if len(belongings) > 0:
+                        belongings[0].activate()
 
     def update(self, platforms, teachers, admin, bad_students, belongings, inventory):
         self.apply_gravity()
