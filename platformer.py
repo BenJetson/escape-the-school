@@ -3,8 +3,6 @@
 import pygame
 import random
 import intersects
-import calendar
-import time
 from graphic_handler import *
 
 pygame.init()
@@ -59,14 +57,6 @@ GRAVITY = 0.4
 TERMINAL_VELOCITY = 10
 
 
-def fix_inventory(inventory):
-    pass
-
-
-def get_current_time():
-    return calendar.timegm(time.gmtime())
-
-
 class Student:
 
     def __init__(self, x, y, img):
@@ -79,7 +69,6 @@ class Student:
         self.vx = 0
         self.vy = 0
         self.speed = H_SPEED
-        self.temp_speed_changes = []
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
@@ -114,13 +103,7 @@ class Student:
     def apply_gravity(self):
          self.vy += GRAVITY
          self.vy = min(self.vy, TERMINAL_VELOCITY)
-
-    def change_speed_temp(self, expiry_time, amount):
-        self.temp_speed_changes.append({
-            "expiryTime" : expiry_time,
-            "changeAmount" : amount
-        })
-
+         
     def process_platforms(self, platforms):
         self.x += self.vx
 
@@ -184,11 +167,16 @@ class Student:
         is_touching = False
             
         for t in teachers:
+            teachers_rect = t.get_rect()
 
-            if t.is_touching(student_rect):
+            if intersects.rect_rect(student_rect, teachers_rect):
                     print("bonk!")
-                    # is_touching = True
-                    self.change_speed_temp(get_current_time() + 5, H_SPEED/2)
+                    is_touching = True
+
+        if is_touching:
+            self.speed = H_SPEED - 1
+        else:
+            self.speed = H_SPEED
             
         #print(self.speed)
 
@@ -219,27 +207,12 @@ class Student:
                 item_rect = b.get_rect()
 
                 if intersects.rect_rect(student_rect, item_rect):
-                    belongings.remove(b)
                     inventory.append(b)
-                    fix_inventory(inventory)
+                    belongings.remove(b)
 
-                    if len(belongings) > 0:
-                        belongings[0].activate()
-
-    def process_speed_changes(self):
-        self.speed = H_SPEED
-        current_time = get_current_time()
-
-        for p in self.temp_speed_changes:
-            if not (p['expiryTime'] < current_time):
-                self.speed -= p['changeAmount']
-            else:
-                self.temp_speed_changes.remove(p)
-
-        self.speed = 1 if self.speed < 1 else self.speed
+                    belongings[0].activate()
 
     def update(self, platforms, teachers, admin, bad_students, belongings, inventory):
-        self.process_speed_changes()
         self.apply_gravity()
         self.process_platforms(platforms)
         self.check_screen_edges()
@@ -264,26 +237,8 @@ class OtherPeople:
         self.h = self.img.get_height()
         self.platform_bound = platform_bound
 
-        self.is_untouchable = False
-        self.last_touch = 0
-
         self.vx = vx
         self.vy = 0
-
-    def process_touchability(self):
-        if self.last_touch + 5 == get_current_time():
-            self.is_untouchable = False
-
-    def is_touching(self, other_rect, dont_set_flag=False, ignore_untouchable=False):
-        if (not self.is_untouchable) or ignore_untouchable:
-            if intersects.rect_rect(self.get_rect(), other_rect):
-                if not dont_set_flag:
-                    self.is_untouchable = True
-                    self.last_touch = get_current_time()
-
-                return True
-
-        return False
 
     def move_and_process_platforms(self, platforms):
         self.x += self.vx
@@ -326,19 +281,8 @@ class OtherPeople:
                     self.y = p.y + p.h
                 self.vy = 0
 
-    def is_touching(self, other_rect, dont_set_flag=False, ignore_untouchable=False):
-        if (not self.is_untouchable) or ignore_untouchable:
-            if intersects.rect_rect(self.get_rect(), other_rect):
-                if not dont_set_flag:
-                    self.is_untouchable = True
-                    self.last_touch = get_current_time()
-
-                return True
-
-        return False
 
     def update(self, platforms):
-        self.process_touchability()
         self.move_and_process_platforms(platforms)
 
     def get_rect(self):
@@ -414,23 +358,26 @@ class BackgroundObjects:
     def draw(self):
         screen.blit(self.img, [self.x, self.y])
 
-
 def load_config():
 
-    global OPENING_TEXT
+    global textrect
+    global opening_text
 
     # Load opening text from disk.
     f = open('Open.txt')
     lines = f.readlines()
     f.close()
 
-    # text_rect = text.get_rect()
-    # text_rect.center_x = screen.get_rect().centerx
-    # text_rect.center_y = screen.get_rect().centery
 
-    # for i in lines:
-    #     OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE)
-    #     text_rect.center_y += 50
+    opening_text = FONT_SM.render("Hey", True, WHITE)
+    textrect = opening_text.get_rect()
+    textrect.centerx = screen.get_rect().centerx
+    textrect.centery = screen.get_rect().centery
+
+    for i in lines:
+        opening_text = FONT_SM.render(i[:-1], True, WHITE)
+        textrect.centery += 50
+        print(i)
 
 
 # Make game objects
@@ -524,7 +471,7 @@ while not done:
     # Draw game objects on-screen.
     if stage == START:
         screen.fill(DARKER_GREY)
-        # screen.blit(OPENING_TEXT, [295, 200])
+        screen.blit(opening_text, textrect (0, 0))
 
     elif stage == PLAYING:
         screen.fill(DARKER_GREY)
