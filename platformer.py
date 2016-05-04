@@ -60,7 +60,16 @@ TERMINAL_VELOCITY = 10
 
 
 def fix_inventory(inventory):
-    pass
+    x_val = 400
+    y_val = 0
+
+    for item in inventory:
+        item.x = x_val
+        item.y = y_val
+
+        item.img = graphic_absolute_resize(item.img, None, 40)
+
+        x_val += item.img.get_width() + 15
 
 
 def get_current_time():
