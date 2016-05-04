@@ -64,6 +64,10 @@ def fix_inventory(inventory):
     y_val = 0
 
     for item in inventory:
+
+        item.can_collect = False
+        item.is_visible = True
+
         item.x = x_val
         item.y = y_val
 
