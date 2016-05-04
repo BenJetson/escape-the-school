@@ -552,7 +552,7 @@ while not done:
 
  # Messages
     START_TEXT = FONT_SM.render("Press space to start.", True, WHITE)
-    SCORE = FONT_SM.render("Score:" + format(score), True, WHITE)
+    SCORE = FONT_SM.render("Backpack:", True, WHITE)
 
     # Draw game objects on-screen.
     if stage == START:
