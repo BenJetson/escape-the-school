@@ -454,6 +454,26 @@ def load_config():
     #     text_rect.center_y += 50
 
 
+def load_config():
+
+    global textrect
+    global OPENING_TEXT
+
+    # Load opening text from disk.
+    f = open('Open.txt')
+    lines = f.readlines()
+    f.close()
+
+    OPENING_TEXT = FONT_SM.render("Hey", True, WHITE, DARKER_GREY)
+    textrect = OPENING_TEXT.get_rect()
+    textrect.centerx = screen.get_rect().centerx
+    textrect.centery = screen.get_rect().centery
+
+    for i in lines:
+        OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE, DARKER_GREY)
+        textrect.centery += 50
+        print(i)
+
 # Make game objects
 
 def setup():
@@ -521,7 +541,7 @@ while not done:
         elif pressed[pygame.K_LEFT]:
              student.move(-student.speed)
         else:
-             student.stop()
+            student.stop()
 
     # game logic
     # player.update(ground, platforms)
@@ -544,7 +564,7 @@ while not done:
     # Draw game objects on-screen.
     if stage == START:
         screen.fill(DARKER_GREY)
-        # screen.blit(OPENING_TEXT, [295, 200])
+        screen.blit(OPENING_TEXT, textrect)
 
     elif stage == PLAYING:
         screen.fill(DARKER_GREY)
