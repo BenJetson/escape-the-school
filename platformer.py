@@ -100,6 +100,9 @@ class Student:
             if intersects.rect_rect(student_rect, platform_rect):
                 can_jump = True
 
+        if self.y + self.h >= HEIGHT:
+            can_jump = True
+
         if can_jump:
             self.vy = -JUMP_POWER
 
@@ -155,6 +158,11 @@ class Student:
             self.x = 0
         elif self.x + self.w > WIDTH:
             self.x = WIDTH - self.w
+
+        if self.y < 0:
+            self.y = 0
+        elif self.y + self.h > HEIGHT:
+            self.y = HEIGHT - self.h
     
     def check_ground(self, ground):
         if self.y + self.h > ground.y:
@@ -450,8 +458,7 @@ def setup():
                  Platform(0, 700, 100, 10),
                  Platform(900, 700, 100, 10),
                  Platform(450, 700, 100, 10),
-                 Platform(850, 100, 150, 10),
-                 Platform(0, 710, 1000, 90)]
+                 Platform(850, 100, 150, 10)]
     background_objects = [BackgroundObjects(950, 0, exit_img)]
     belongings = [Belongings(475, 300, laptop_img),
                   Belongings(475, 650, phone_img),
