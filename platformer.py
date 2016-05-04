@@ -456,23 +456,16 @@ def load_config():
 
 def load_config():
 
-    global textrect
-    global OPENING_TEXT
+    global opening_lines
+
+    opening_lines = []
 
     # Load opening text from disk.
-    f = open('Open.txt')
-    lines = f.readlines()
-    f.close()
+    with open('Open.txt', 'r') as f:
+        lines = f.read().splitlines()
 
-    OPENING_TEXT = FONT_SM.render("Hey", True, WHITE, DARKER_GREY)
-    textrect = OPENING_TEXT.get_rect()
-    textrect.centerx = screen.get_rect().centerx
-    textrect.centery = screen.get_rect().centery
-
-    for i in lines:
-        OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE, DARKER_GREY)
-        textrect.centery += 50
-        print(i)
+    for l in lines:
+        opening_lines.append(FONT_SM.render(l, True, WHITE))
 
 # Make game objects
 
@@ -564,7 +557,14 @@ while not done:
     # Draw game objects on-screen.
     if stage == START:
         screen.fill(DARKER_GREY)
-        screen.blit(OPENING_TEXT, textrect)
+
+        x_val = 0
+        y_val = 100
+
+        for line in opening_lines:
+            screen.blit(line, [screen.get_rect().centerx - int(line.get_width() / 2), y_val])
+            y_val += 25
+
 
     elif stage == PLAYING:
         screen.fill(DARKER_GREY)
