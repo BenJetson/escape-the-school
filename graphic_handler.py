@@ -26,6 +26,19 @@ def graphic_resizer(image, percentage):
     return pygame.transform.scale(image, (int(width * scale_factor), int(height * scale_factor)))
 
 
+def graphic_absolute_resize(image, w=None, h=None):
+
+    if w and not h:
+        h = (image.get_height() * w) / image.get_width()
+    elif h and not w:
+        w = (image.get_width() * h) / image.get_height()
+    else:
+        w = image.get_width()
+        h = image.get_height()
+
+    return pygame.transform.scale(image, (int(w), int(h)))
+
+
 def graphic_hz_flip(image):
     return pygame.transform.flip(image, True, False)
 
