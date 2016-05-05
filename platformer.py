@@ -480,32 +480,6 @@ def setup():
     done = False
     stage = START
 
-
-# Initialize variables
-setup()
-load_config()
-
-
-
-
-def load_config():
-
-    global OPENING_TEXT
-
-    # Load opening text from disk.
-    f = open('Open.txt')
-    lines = f.readlines()
-    f.close()
-
-    # text_rect = text.get_rect()
-    # text_rect.center_x = screen.get_rect().centerx
-    # text_rect.center_y = screen.get_rect().centery
-
-    # for i in lines:
-    #     OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE)
-    #     text_rect.center_y += 50
-# Make game objects
-
 def load_config():
 
     global opening_lines
@@ -518,6 +492,10 @@ def load_config():
 
     for l in lines:
         opening_lines.append(FONT_SM.render(l, True, WHITE))
+
+# Initialize variables
+setup()
+load_config()
 
 while not done:
     # event handling
