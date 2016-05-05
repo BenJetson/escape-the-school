@@ -51,6 +51,7 @@ phone_img = graphic_loader("img/phone.png")
 card_img = graphic_loader("img/playing_card.png")
 staffbadge_img = graphic_loader("img/staff_badge.png")
 exit_img = graphic_loader("img/exit.png")
+iss_img = graphic_loader("img/iss.png")
 
 # Physics
 H_SPEED = 4
@@ -436,39 +437,6 @@ class BackgroundObjects:
         screen.blit(self.img, [self.x, self.y])
 
 
-def load_config():
-
-    global OPENING_TEXT
-
-    # Load opening text from disk.
-    f = open('Open.txt')
-    lines = f.readlines()
-    f.close()
-
-    # text_rect = text.get_rect()
-    # text_rect.center_x = screen.get_rect().centerx
-    # text_rect.center_y = screen.get_rect().centery
-
-    # for i in lines:
-    #     OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE)
-    #     text_rect.center_y += 50
-
-
-def load_config():
-
-    global opening_lines
-
-    opening_lines = []
-
-    # Load opening text from disk.
-    with open('Open.txt', 'r') as f:
-        lines = f.read().splitlines()
-
-    for l in lines:
-        opening_lines.append(FONT_SM.render(l, True, WHITE))
-
-# Make game objects
-
 def setup():
     global student, platforms, background_objects, \
         belongings, teachers, admins, bad_students, \
@@ -488,7 +456,12 @@ def setup():
                  Platform(700, 150, 100, 10),
                  Platform(550, 300, 100, 10),
                  Platform(330, 270, 100, 10)]
-    background_objects = [BackgroundObjects(950, 0, exit_img)]
+    background_objects = [BackgroundObjects(950, 0, exit_img),
+                          BackgroundObjects(475, 730, iss_img),
+                          BackgroundObjects(30, 730, iss_img),
+                          BackgroundObjects(920, 730, iss_img),
+                          BackgroundObjects(725, 730, iss_img),
+                          BackgroundObjects(225, 730, iss_img)]
     belongings = [Belongings(475, 300, laptop_img),
                   Belongings(475, 650, phone_img),
                   Belongings(25, 440, staffbadge_img),
@@ -507,6 +480,18 @@ def setup():
     done = False
     stage = START
 
+def load_config():
+
+    global opening_lines
+
+    opening_lines = []
+
+    # Load opening text from disk.
+    with open('Open.txt', 'r') as f:
+        lines = f.read().splitlines()
+
+    for l in lines:
+        opening_lines.append(FONT_SM.render(l, True, WHITE))
 
 # Initialize variables
 setup()
