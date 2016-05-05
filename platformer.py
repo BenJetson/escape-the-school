@@ -437,39 +437,6 @@ class BackgroundObjects:
         screen.blit(self.img, [self.x, self.y])
 
 
-def load_config():
-
-    global OPENING_TEXT
-
-    # Load opening text from disk.
-    f = open('Open.txt')
-    lines = f.readlines()
-    f.close()
-
-    # text_rect = text.get_rect()
-    # text_rect.center_x = screen.get_rect().centerx
-    # text_rect.center_y = screen.get_rect().centery
-
-    # for i in lines:
-    #     OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE)
-    #     text_rect.center_y += 50
-
-
-def load_config():
-
-    global opening_lines
-
-    opening_lines = []
-
-    # Load opening text from disk.
-    with open('Open.txt', 'r') as f:
-        lines = f.read().splitlines()
-
-    for l in lines:
-        opening_lines.append(FONT_SM.render(l, True, WHITE))
-
-# Make game objects
-
 def setup():
     global student, platforms, background_objects, \
         belongings, teachers, admins, bad_students, \
@@ -485,7 +452,10 @@ def setup():
                  Platform(0, 700, 100, 10),
                  Platform(900, 700, 100, 10),
                  Platform(450, 700, 100, 10),
-                 Platform(850, 100, 150, 10)]
+                 Platform(850, 100, 150, 10),
+                 Platform(700, 150, 100, 10),
+                 Platform(550, 300, 100, 10),
+                 Platform(330, 270, 100, 10)]
     background_objects = [BackgroundObjects(950, 0, exit_img),
                           BackgroundObjects(475, 730, iss_img),
                           BackgroundObjects(30, 730, iss_img),
@@ -514,6 +484,40 @@ def setup():
 # Initialize variables
 setup()
 load_config()
+
+
+
+
+def load_config():
+
+    global OPENING_TEXT
+
+    # Load opening text from disk.
+    f = open('Open.txt')
+    lines = f.readlines()
+    f.close()
+
+    # text_rect = text.get_rect()
+    # text_rect.center_x = screen.get_rect().centerx
+    # text_rect.center_y = screen.get_rect().centery
+
+    # for i in lines:
+    #     OPENING_TEXT = FONT_SM.render(i[:-1], True, WHITE)
+    #     text_rect.center_y += 50
+# Make game objects
+
+def load_config():
+
+    global opening_lines
+
+    opening_lines = []
+
+    # Load opening text from disk.
+    with open('Open.txt', 'r') as f:
+        lines = f.read().splitlines()
+
+    for l in lines:
+        opening_lines.append(FONT_SM.render(l, True, WHITE))
 
 while not done:
     # event handling
