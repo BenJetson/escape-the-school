@@ -61,7 +61,7 @@ TERMINAL_VELOCITY = 10
 SHOW_GRID = True
 
 
-def draw_gridlines():
+def draw_grid():
     for i in range(0, HEIGHT, 25):
         pygame.draw.line(screen, BLACK, [0, i], [WIDTH, i])
 
@@ -592,7 +592,7 @@ while not done:
             i.draw()
 
         if SHOW_GRID:
-            draw_gridlines()
+            draw_grid()
 
         student.draw()
 
