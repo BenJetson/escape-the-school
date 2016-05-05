@@ -51,6 +51,7 @@ phone_img = graphic_loader("img/phone.png")
 card_img = graphic_loader("img/playing_card.png")
 staffbadge_img = graphic_loader("img/staff_badge.png")
 exit_img = graphic_loader("img/exit.png")
+iss_img = graphic_loader("img/iss.png")
 
 # Physics
 H_SPEED = 4
@@ -485,7 +486,12 @@ def setup():
                  Platform(900, 700, 100, 10),
                  Platform(450, 700, 100, 10),
                  Platform(850, 100, 150, 10)]
-    background_objects = [BackgroundObjects(950, 0, exit_img)]
+    background_objects = [BackgroundObjects(950, 0, exit_img),
+                          BackgroundObjects(475, 730, iss_img),
+                          BackgroundObjects(30, 730, iss_img),
+                          BackgroundObjects(920, 730, iss_img),
+                          BackgroundObjects(725, 730, iss_img),
+                          BackgroundObjects(225, 730, iss_img)]
     belongings = [Belongings(475, 300, laptop_img),
                   Belongings(475, 650, phone_img),
                   Belongings(25, 440, staffbadge_img),
