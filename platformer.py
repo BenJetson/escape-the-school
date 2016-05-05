@@ -62,10 +62,10 @@ SHOW_GRID = True
 
 
 def draw_grid():
-    for i in range(0, HEIGHT, 25):
+    for i in range(25, HEIGHT, 25):
         pygame.draw.line(screen, BLACK, [0, i], [WIDTH, i])
 
-    for i in range(0, WIDTH, 25):
+    for i in range(25, WIDTH, 25):
         pygame.draw.line(screen, BLACK, [i, 0], [i, HEIGHT])
 
 
