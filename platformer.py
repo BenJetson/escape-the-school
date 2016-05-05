@@ -58,6 +58,15 @@ H_SPEED = 4
 JUMP_POWER = 12
 GRAVITY = 0.4
 TERMINAL_VELOCITY = 10
+SHOW_GRID = True
+
+
+def draw_grid():
+    for i in range(0, HEIGHT, 25):
+        pygame.draw.line(screen, BLACK, [0, i], [WIDTH, i])
+
+    for i in range(0, WIDTH, 25):
+        pygame.draw.line(screen, BLACK, [i, 0], [i, HEIGHT])
 
 
 def fix_inventory(inventory):
@@ -502,6 +511,7 @@ load_config()
 
 while not done:
     # event handling
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
@@ -580,6 +590,9 @@ while not done:
 
         for i in inventory:
             i.draw()
+
+        if SHOW_GRID:
+            draw_grid()
 
         student.draw()
 
