@@ -1,9 +1,9 @@
     "Ready for that test later?" your friend asks as you walk down the hall.
     "What test?" you ask as s sense of foreboding seeps through you.
-    "The one in Mr.Repooc's class?  You did study for it, didn't you?  He said it was going to be really
-     hard."
-    You flash back to last nights events: arrival home; grab Nintendo, soda, hot pocket; lay on bed
-     and spend the rest of the night improving your stats in Epic Crush Frat.
+    "The one in Mr.Repooc's class?  You did study for it, didn't you?  He said it was
+    going to be really hard."
+    You flash back to last nights events: arrival home; grab Nintendo, soda, hot pocket;
+    lay on bed and spend the rest of the night improving your stats in Epic Crush Frat.
     "No, I forgot," you groan.
     "How could you forget!"
     "I was busy with... important stuff."
@@ -18,11 +18,12 @@
     shady kid.  After you have collected all of these things, you must make your way to
     the exit.
     Fair warning: You'll want to avoid the teachers, administrators, and annoying students
-    who will very rudely, and  with no regard for your illness, hold you up and distract your goal.
-    The teachers, upon hearing that you will not be in their class, will give you the homework they
-    were going to assign.  The admininstrators will send you to detention for what they call
-    "aimless wandering" around the halls.  And the annoying students will start talking to you,
-    and you being the polite person you are will have to stop and listen to them.
+    who will very rudely, and  with no regard for your illness, hold you up and distract
+    your goal.  The teachers, upon hearing that you will not be in their class, will give
+    you the homework they were going to assign.  The admininstrators will send you to
+    detention for what they call "aimless wandering" around the halls.  And the annoying
+    students will start talking to you, and you being the polite person you are will have
+    to stop and listen to them.
 
     (Press Space to Start)
 
