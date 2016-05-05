@@ -484,7 +484,10 @@ def setup():
                  Platform(0, 700, 100, 10),
                  Platform(900, 700, 100, 10),
                  Platform(450, 700, 100, 10),
-                 Platform(850, 100, 150, 10)]
+                 Platform(850, 100, 150, 10),
+                 Platform(700, 150, 100, 10),
+                 Platform(550, 300, 100, 10),
+                 Platform(330, 270, 100, 10)]
     background_objects = [BackgroundObjects(950, 0, exit_img)]
     belongings = [Belongings(475, 300, laptop_img),
                   Belongings(475, 650, phone_img),
