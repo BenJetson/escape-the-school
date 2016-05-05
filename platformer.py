@@ -547,7 +547,7 @@ while not done:
         screen.fill(DARKER_GREY)
 
         x_val = 0
-        y_val = 100
+        y_val = 50
 
         for line in opening_lines:
             screen.blit(line, [screen.get_rect().centerx - int(line.get_width() / 2), y_val])
