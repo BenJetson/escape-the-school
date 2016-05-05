@@ -175,6 +175,7 @@ class Student:
 
         if self.y < 0:
             self.y = 0
+            self.vy = 0
         elif self.y + self.h > HEIGHT:
             self.y = HEIGHT - self.h
     
@@ -480,6 +481,7 @@ def setup():
     done = False
     stage = START
 
+
 def load_config():
 
     global opening_lines
@@ -494,6 +496,7 @@ def load_config():
         opening_lines.append(FONT_SM.render(l, True, WHITE))
 
 # Initialize variables
+inventory = []
 setup()
 load_config()
 
@@ -538,7 +541,7 @@ while not done:
         for b in bad_students:
             b.update(platforms)    
 
- # Messages
+    # Messages
     START_TEXT = FONT_SM.render("Press space to start.", True, WHITE)
     SCORE = FONT_SM.render("Backpack:", True, WHITE)
 
@@ -552,7 +555,6 @@ while not done:
         for line in opening_lines:
             screen.blit(line, [screen.get_rect().centerx - int(line.get_width() / 2), y_val])
             y_val += 25
-
 
     elif stage == PLAYING:
         screen.fill(DARKER_GREY)
