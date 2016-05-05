@@ -443,19 +443,19 @@ def setup():
         done, score, stage, inventory
 
     student = Student(0, 250, student_img)
-    platforms = [Platform(0, 250, 100, 10),
-                 Platform(0, 475, 100, 10),
-                 Platform(125, 365, 100, 10),
-                 Platform(310, 550, 100, 10),
-                 Platform(580, 550, 100, 10),
-                 Platform(450, 350, 100, 10),
-                 Platform(0, 700, 100, 10),
-                 Platform(900, 700, 100, 10),
-                 Platform(450, 700, 100, 10),
-                 Platform(850, 100, 150, 10),
-                 Platform(700, 150, 100, 10),
-                 Platform(550, 300, 100, 10),
-                 Platform(330, 270, 100, 10)]
+    platforms = [Platform(0, 250, 150, 10),
+                 Platform(0, 475, 150, 10),
+                 Platform(200, 365, 150, 10),
+                 Platform(310, 550, 150, 10),
+                 Platform(580, 550, 150, 10),
+                 Platform(450, 350, 150, 10),
+                 Platform(0, 700, 150, 10),
+                 Platform(850, 700, 150, 10),
+                 Platform(400, 700, 150, 10),
+                 Platform(800, 100, 200, 10),
+                 Platform(700, 150, 150, 10),
+                 Platform(550, 250, 150, 10),
+                 Platform(330, 270, 150, 10)]
     background_objects = [BackgroundObjects(950, 0, exit_img),
                           BackgroundObjects(475, 730, iss_img),
                           BackgroundObjects(30, 730, iss_img),
