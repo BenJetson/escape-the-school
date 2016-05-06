@@ -473,10 +473,10 @@ def setup():
                           BackgroundObjects(920, 730, iss_img),
                           BackgroundObjects(725, 730, iss_img),
                           BackgroundObjects(225, 730, iss_img)]
-    belongings = [Belongings(475, 300, laptop_img),
+    belongings = [Belongings(500, 325, laptop_img),
                   Belongings(475, 650, phone_img),
                   Belongings(25, 440, staffbadge_img),
-                  Belongings(25, 210, card_img)]
+                  Belongings(25, 185, card_img)]
     teachers = [OtherPeople(0, 411, teacher_img)]
     admins = [OtherPeople(0, 186, admin_img)]
     bad_students = [OtherPeople(125, 301, bad_student_img)]
