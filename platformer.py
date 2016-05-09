@@ -225,13 +225,15 @@ class Student:
         #print(self.speed)
 
     def process_admin(self, admin):
+        global student
         student_rect = self.get_rect()
             
         for a in admin:
             admin_rect = a.get_rect()
 
             if intersects.rect_rect(student_rect, admin_rect):
-                    print("ahh!")
+                student = Student(0, 736, student_img)
+                print("ahh!")
 
     def process_bad_student(self, bad_student):
         student_rect = self.get_rect()
