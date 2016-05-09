@@ -225,15 +225,14 @@ class Student:
         #print(self.speed)
 
     def process_admin(self, admin):
-        global student
+        global student, can_jump
         student_rect = self.get_rect()
             
         for a in admin:
-            admin_rect = a.get_rect()
 
-            if intersects.rect_rect(student_rect, admin_rect):
+            if a.is_touching(student_rect):
                 student = Student(0, 736, student_img)
-                print("ahh!")
+                can_jump = False
 
     def process_bad_student(self, bad_student):
         student_rect = self.get_rect()
@@ -241,8 +240,9 @@ class Student:
         for b in bad_student:
             bad_student_rect = b.get_rect()
 
-            if intersects.rect_rect(student_rect, bad_student_rect):
-                    print("ugh")
+            if b.is_touching(student_rect):
+                self.change_speed_temp(get_current_time() + 3, H_SPEED)
+                print("ugh")
 
     def process_belongings(self, belongings, inventory):
 
@@ -270,7 +270,7 @@ class Student:
             else:
                 self.temp_speed_changes.remove(p)
 
-        self.speed = 1 if self.speed < 1 else self.speed
+        # self.speed = 1 if self.speed < 1 else self.speed
 
     def update(self, platforms, teachers, admin, bad_students, belongings, inventory):
         self.process_speed_changes()
