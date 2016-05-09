@@ -30,6 +30,7 @@ PASTEL_BLUE = ()
 
 # Fonts
 FONT_SM = pygame.font.Font(None, 30)
+FONT_BG = pygame.font.Font(None, 80)
 
 # Stages
 START = 0
@@ -38,7 +39,7 @@ END = 2
 PAUSED = 3
 
 # Other Documents
-pause_text = FONT_SM.render("PRESS SPACE TO RESUME", True, WHITE)
+pause_text = FONT_BG.render("PRESS SPACE TO RESUME", True, WHITE)
 
 # Character Images
 student_img = graphic_loader("img/student.png")
