@@ -495,9 +495,9 @@ def setup():
                   Belongings(25, 440, staffbadge_img),
                   Belongings(25, 185, card_img)]
     teachers = [OtherPeople(0, 411, teacher_img),
-                OtherPeople(400, 636, teacher_img)]
-    admins = [OtherPeople(275, 486, admin_img),
-              OtherPeople(850, 636, admin_img)]
+                OtherPeople(450, 636, teacher_img)]
+    admins = [OtherPeople(295, 486, admin_img),
+              OtherPeople(950, 636, admin_img)]
     bad_students = [OtherPeople(500, 311, bad_student_img),
                     OtherPeople(300, 111, bad_student_img)]
     inventory = []
