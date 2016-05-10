@@ -57,8 +57,8 @@ iss_img = graphic_loader("img/iss.png")
 
 # Physics
 H_SPEED = 4
-JUMP_POWER = 12
-GRAVITY = 0.4
+JUMP_POWER = 8
+GRAVITY = 0.2
 TERMINAL_VELOCITY = 10
 SHOW_GRID = True
 TIME_MOD = 0
@@ -452,10 +452,22 @@ class BackgroundObjects:
         screen.blit(self.img, [self.x, self.y])
 
 
+class areaRect:
+    def __init__(self, x, y, w, h):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+
+    def get_rect(self):
+        return [self.x, self.y, self.w, self.h]
+
+
 def setup():
     global student, platforms, background_objects, \
         belongings, teachers, admins, bad_students, \
-        done, score, stage, inventory
+        done, score, stage, inventory, exit_rect, \
+        detention_rect
 
     student = Student(0, 0, student_img)
     platforms = [Platform(0, 225, 150, 10),
@@ -489,6 +501,8 @@ def setup():
     bad_students = [OtherPeople(500, 311, bad_student_img),
                     OtherPeople(300, 111, bad_student_img)]
     inventory = []
+    detention_rect = areaRect(0, 710, WIDTH, HEIGHT)
+    exit_rect = areaRect(800, 0, 200, 100)
 
     belongings[0].activate()
 
@@ -533,7 +547,9 @@ while not done:
                     stage = PLAYING
                     
             if stage == PLAYING:
-                if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+                if (event.key == pygame.K_SPACE or
+                            event.key == pygame.K_UP or
+                            event.key == pygame.K_w):
                      student.jump(platforms)
                 elif event.key == pygame.K_p:
                     stage = PAUSED
@@ -547,19 +563,15 @@ while not done:
                     stage = PLAYING
                     print(stage)
 
-
-
     if stage == PLAYING:
         pressed = pygame.key.get_pressed()
 
-        if pressed[pygame.K_RIGHT]:
+        if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
              student.move(student.speed)
-        elif pressed[pygame.K_LEFT]:
+        elif pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
              student.move(-student.speed)
         else:
             student.stop()
-
-
 
     # game logic
     # player.update(ground, platforms)
