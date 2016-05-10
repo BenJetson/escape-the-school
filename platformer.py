@@ -106,33 +106,35 @@ class Student:
         self.vy = 0
         self.speed = H_SPEED
         self.temp_speed_changes = []
+        self.has_detention = False
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
 
     def jump(self, platforms):
-        can_jump = False
-        
-        self.y += 1
+        if not self.has_detention:
+            can_jump = False
 
-        student_rect = self.get_rect()
-                
-        #if intersects.rect_rect(student_rect, ground.get_rect()):
-            #can_jump = True
-    
-        for p in platforms:
-            platform_rect = p.get_rect()
+            self.y += 1
 
-            if intersects.rect_rect(student_rect, platform_rect):
+            student_rect = self.get_rect()
+
+            #if intersects.rect_rect(student_rect, ground.get_rect()):
+                #can_jump = True
+
+            for p in platforms:
+                platform_rect = p.get_rect()
+
+                if intersects.rect_rect(student_rect, platform_rect):
+                    can_jump = True
+
+            if self.y + self.h >= HEIGHT:
                 can_jump = True
 
-        if self.y + self.h >= HEIGHT:
-            can_jump = True
+            if can_jump:
+                self.vy = -JUMP_POWER
 
-        if can_jump:
-            self.vy = -JUMP_POWER
-
-        self.y -= 1
+            self.y -= 1
 
     def move(self, vx):
         self.vx = vx
@@ -227,15 +229,21 @@ class Student:
             
         #print(self.speed)
 
-    def process_admin(self, admin):
+    def process_admins(self, admins, detention_rect):
         global student, can_jump
         student_rect = self.get_rect()
             
-        for a in admin:
+        for a in admins:
 
             if a.is_touching(student_rect):
-                student = Student(0, 736, student_img)
-                can_jump = False
+                self.has_detention = get_current_time() + 10
+                self.tp_to_detention(detention_rect)
+
+    def tp_to_detention(self, detention_rect):
+        detention_rect = detention_rect.get_rect()
+
+        self.y = detention_rect[2]
+        self.x = random.randint(detention_rect[1], detention_rect[3])
 
     def process_bad_student(self, bad_student):
         student_rect = self.get_rect()
@@ -275,15 +283,34 @@ class Student:
 
         # self.speed = 1 if self.speed < 1 else self.speed
 
-    def update(self, platforms, teachers, admin, bad_students, belongings, inventory):
+    def process_detention(self, detention_rect):
+        if self.has_detention:
+            if get_current_time() < self.has_detention:
+                student_rect = self.get_rect()
+                detention_rect = detention_rect.get_rect()
+                self.y = detention_rect[1] if student_rect[1] > detention_rect[1] else self.y
+                self.x = detention_rect[0] if student_rect[0] < detention_rect[0] else self.x
+                self.x = detention_rect[0] + detention_rect[2] - student_rect[2] \
+                    if student_rect[0] + student_rect[2] > detention_rect[0] + detention_rect[2] \
+                    else self.x
+                self.y = detention_rect[1] + detention_rect[3] - student_rect[3] - 1 \
+                    if student_rect[1] + student_rect[3] > detention_rect[1] + detention_rect[3] \
+                    else self.y
+                print("detention")
+            else:
+                self.has_detention = False
+                print("detention dismissed")
+
+    def update(self, platforms, teachers, admin, bad_students, belongings, inventory, detention_rect):
         self.process_speed_changes()
         self.apply_gravity()
+        self.process_detention(detention_rect)
         self.process_platforms(platforms)
         self.check_screen_edges()
         #self.check_ground()
         #self.process_coins(coins)
         self.process_teachers(teachers)
-        self.process_admin(admin)
+        self.process_admins(admin, detention_rect)
         self.process_bad_student(bad_students)
         self.process_belongings(belongings, inventory)
         
@@ -467,7 +494,7 @@ def setup():
     global student, platforms, background_objects, \
         belongings, teachers, admins, bad_students, \
         done, score, stage, inventory, exit_rect, \
-        detention_rect
+        detention_rect, iss_signs
 
     student = Student(0, 250, student_img)
     platforms = [Platform(0, 225, 150, 10),
@@ -484,8 +511,8 @@ def setup():
                  Platform(300, 175, 150, 10),
                  Platform(775, 450, 150, 10),
                  Platform(550, 150, 150, 10)]
-    background_objects = [BackgroundObjects(950, 0, exit_img),
-                          BackgroundObjects(475, 730, iss_img),
+    background_objects = [BackgroundObjects(950, 0, exit_img)]
+    iss_signs = [BackgroundObjects(475, 730, iss_img),
                           BackgroundObjects(30, 730, iss_img),
                           BackgroundObjects(920, 730, iss_img),
                           BackgroundObjects(725, 730, iss_img),
@@ -498,7 +525,7 @@ def setup():
     admins = [OtherPeople(275, 486, admin_img)]
     bad_students = [OtherPeople(500, 311, bad_student_img)]
     inventory = []
-    detention_rect = areaRect(0, 710, WIDTH, HEIGHT)
+    detention_rect = areaRect(0, 736, WIDTH, HEIGHT)
     exit_rect = areaRect(800, 0, 200, 100)
 
     belongings[0].activate()
@@ -573,7 +600,7 @@ while not done:
     # game logic
     # player.update(ground, platforms)
     if stage == PLAYING:
-        student.update(platforms, teachers, admins, bad_students, belongings, inventory)
+        student.update(platforms, teachers, admins, bad_students, belongings, inventory, detention_rect)
 
         for t in teachers:
             t.update(platforms)
@@ -601,6 +628,10 @@ while not done:
 
     elif stage == PLAYING or stage == PAUSED:
         screen.fill(DARKER_GREY)
+
+        if student.has_detention:
+            for i in iss_signs:
+                i.draw()
 
         for b in background_objects:
             b.draw()
