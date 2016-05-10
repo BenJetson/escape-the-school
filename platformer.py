@@ -453,7 +453,7 @@ class BackgroundObjects:
 
 
 class areaRect:
-    def __init(self, x, y, w, h):
+    def __init__(self, x, y, w, h):
         self.x = x
         self.y = y
         self.w = w
