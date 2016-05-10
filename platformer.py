@@ -301,12 +301,19 @@ class Student:
                 self.has_detention = False
                 print("detention dismissed")
 
-    def update(self, platforms, teachers, admin, bad_students, belongings, inventory, detention_rect):
+    def process_exit(self, exit_rect):
+        exit_rect = exit_rect.get_rect()
+
+        if intersects.rect_rect(self.get_rect(), exit_rect):
+            print("exit!")
+
+    def update(self, platforms, teachers, admin, bad_students, belongings, inventory, detention_rect, exit_rect):
         self.process_speed_changes()
         self.apply_gravity()
         self.process_detention(detention_rect)
         self.process_platforms(platforms)
         self.check_screen_edges()
+        self.process_exit(exit_rect)
         #self.check_ground()
         #self.process_coins(coins)
         self.process_teachers(teachers)
@@ -603,7 +610,7 @@ while not done:
     # game logic
     # player.update(ground, platforms)
     if stage == PLAYING:
-        student.update(platforms, teachers, admins, bad_students, belongings, inventory, detention_rect)
+        student.update(platforms, teachers, admins, bad_students, belongings, inventory, detention_rect, exit_rect)
 
         for t in teachers:
             t.update(platforms)
