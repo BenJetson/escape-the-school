@@ -457,7 +457,7 @@ def setup():
         belongings, teachers, admins, bad_students, \
         done, score, stage, inventory
 
-    student = Student(0, 250, student_img)
+    student = Student(0, 0, student_img)
     platforms = [Platform(0, 225, 150, 10),
                  Platform(0, 475, 150, 10),
                  Platform(175, 325, 150, 10),
