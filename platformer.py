@@ -496,7 +496,7 @@ def setup():
         done, score, stage, inventory, exit_rect, \
         detention_rect, iss_signs
 
-    student = Student(0, 250, student_img)
+    student = Student(0, 0, student_img)
     platforms = [Platform(0, 225, 150, 10),
                  Platform(0, 475, 150, 10),
                  Platform(175, 325, 150, 10),
@@ -521,9 +521,12 @@ def setup():
                   Belongings(475, 650, phone_img),
                   Belongings(25, 440, staffbadge_img),
                   Belongings(25, 185, card_img)]
-    teachers = [OtherPeople(0, 411, teacher_img)]
-    admins = [OtherPeople(275, 486, admin_img)]
-    bad_students = [OtherPeople(500, 311, bad_student_img)]
+    teachers = [OtherPeople(0, 411, teacher_img),
+                OtherPeople(450, 636, teacher_img)]
+    admins = [OtherPeople(295, 486, admin_img),
+              OtherPeople(950, 636, admin_img)]
+    bad_students = [OtherPeople(500, 311, bad_student_img),
+                    OtherPeople(300, 111, bad_student_img)]
     inventory = []
     detention_rect = areaRect(0, 736, WIDTH, HEIGHT)
     exit_rect = areaRect(800, 0, 200, 100)
