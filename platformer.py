@@ -30,14 +30,16 @@ PASTEL_BLUE = ()
 
 # Fonts
 FONT_SM = pygame.font.Font(None, 30)
+FONT_BG = pygame.font.Font(None, 80)
 
 # Stages
 START = 0
 PLAYING = 1
 END = 2
+PAUSED = 3
 
 # Other Documents
-
+pause_text = FONT_BG.render("PRESS SPACE TO RESUME", True, WHITE)
 
 # Character Images
 student_img = graphic_loader("img/student.png")
@@ -59,6 +61,7 @@ JUMP_POWER = 12
 GRAVITY = 0.4
 TERMINAL_VELOCITY = 10
 SHOW_GRID = True
+TIME_MOD = 0
 
 
 def draw_grid():
@@ -87,7 +90,7 @@ def fix_inventory(inventory):
 
 
 def get_current_time():
-    return calendar.timegm(time.gmtime())
+    return calendar.timegm(time.gmtime()) - TIME_MOD
 
 
 class Student:
@@ -529,6 +532,19 @@ while not done:
             if stage == PLAYING:
                 if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
                      student.jump(platforms)
+                elif event.key == pygame.K_p:
+                    stage = PAUSED
+                    PAUSE_TIME = get_current_time()
+                    print(stage)
+
+            if stage == PAUSED:
+                if event.key == pygame.K_SPACE:
+                    RESUME_TIME = get_current_time()
+                    TIME_MOD += RESUME_TIME - PAUSE_TIME
+                    stage = PLAYING
+                    print(stage)
+
+
 
     if stage == PLAYING:
         pressed = pygame.key.get_pressed()
@@ -539,6 +555,8 @@ while not done:
              student.move(-student.speed)
         else:
             student.stop()
+
+
 
     # game logic
     # player.update(ground, platforms)
@@ -569,7 +587,7 @@ while not done:
             screen.blit(line, [screen.get_rect().centerx - int(line.get_width() / 2), y_val])
             y_val += 25
 
-    elif stage == PLAYING:
+    elif stage == PLAYING or stage == PAUSED:
         screen.fill(DARKER_GREY)
 
         for b in background_objects:
@@ -600,6 +618,9 @@ while not done:
         student.draw()
 
         screen.blit(SCORE, [0, 0])
+
+    if stage == PAUSED:
+        screen.blit(pause_text, [(WIDTH/2)-(pause_text.get_width()/2), (HEIGHT/2)-(pause_text.get_height()/2)])
 
     # update screen
     pygame.display.update()
