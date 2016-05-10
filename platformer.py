@@ -57,8 +57,8 @@ iss_img = graphic_loader("img/iss.png")
 
 # Physics
 H_SPEED = 4
-JUMP_POWER = 12
-GRAVITY = 0.4
+JUMP_POWER = 8
+GRAVITY = 0.2
 TERMINAL_VELOCITY = 10
 SHOW_GRID = True
 TIME_MOD = 0
@@ -452,10 +452,22 @@ class BackgroundObjects:
         screen.blit(self.img, [self.x, self.y])
 
 
+class areaRect:
+    def __init(self, x, y, w, h):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
+
+    def get_rect(self):
+        return [self.x, self.y, self.w, self.h]
+
+
 def setup():
     global student, platforms, background_objects, \
         belongings, teachers, admins, bad_students, \
-        done, score, stage, inventory
+        done, score, stage, inventory, exit_rect, \
+        detention_rect
 
     student = Student(0, 250, student_img)
     platforms = [Platform(0, 225, 150, 10),
@@ -486,6 +498,8 @@ def setup():
     admins = [OtherPeople(275, 486, admin_img)]
     bad_students = [OtherPeople(500, 311, bad_student_img)]
     inventory = []
+    detention_rect = areaRect(0, 710, WIDTH, HEIGHT)
+    exit_rect = areaRect(800, 0, 200, 100)
 
     belongings[0].activate()
 
