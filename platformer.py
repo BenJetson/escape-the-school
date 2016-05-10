@@ -544,7 +544,9 @@ while not done:
                     stage = PLAYING
                     
             if stage == PLAYING:
-                if event.key == pygame.K_SPACE or event.key == pygame.K_UP:
+                if (event.key == pygame.K_SPACE or
+                            event.key == pygame.K_UP or
+                            event.key == pygame.K_w):
                      student.jump(platforms)
                 elif event.key == pygame.K_p:
                     stage = PAUSED
@@ -558,19 +560,15 @@ while not done:
                     stage = PLAYING
                     print(stage)
 
-
-
     if stage == PLAYING:
         pressed = pygame.key.get_pressed()
 
-        if pressed[pygame.K_RIGHT]:
+        if pressed[pygame.K_RIGHT] or pressed[pygame.K_d]:
              student.move(student.speed)
-        elif pressed[pygame.K_LEFT]:
+        elif pressed[pygame.K_LEFT] or pressed[pygame.K_a]:
              student.move(-student.speed)
         else:
             student.stop()
-
-
 
     # game logic
     # player.update(ground, platforms)
