@@ -460,7 +460,7 @@ def setup():
                  Platform(0, 475, 150, 10),
                  Platform(175, 325, 150, 10),
                  Platform(275, 550, 150, 10),
-                 Platform(580, 550, 150, 10),
+                 Platform(575, 550, 150, 10),
                  Platform(450, 375, 150, 10),
                  Platform(0, 700, 150, 10),
                  Platform(850, 700, 150, 10),
