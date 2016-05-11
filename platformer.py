@@ -303,10 +303,12 @@ class Student:
                 print("detention dismissed")
 
     def check_exit(self, exit_rect, belongings):
+        global stage
         exit_rect = exit_rect.get_rect()
 
-        if (intersects.rect_rect(self.get_rect(), exit_rect) and
+        if (intersects.rect_absorbs_rect(self.get_rect(), exit_rect) and
             len(belongings) == 0):
+            stage = END
             print("exit!")
 
     def update(self, platforms, teachers, admin, bad_students, belongings, inventory, detention_rect, exit_rect):
@@ -538,7 +540,7 @@ def setup():
                     OtherPeople(300, 111, bad_student_img)]
     inventory = []
     detention_rect = areaRect(0, 700, WIDTH, HEIGHT)
-    exit_rect = areaRect(800, 0, 200, 100)
+    exit_rect = areaRect(975, 0, 25, 100)
 
     belongings[0].activate()
 
@@ -592,6 +594,10 @@ while not done:
                     PAUSE_TIME = get_current_time()
                     print(stage)
 
+            if stage == END:
+                if event.key ==pygame.K_SPACE:
+                    stage = START
+
             if stage == PAUSED:
                 if event.key == pygame.K_SPACE:
                     RESUME_TIME = get_current_time()
@@ -626,6 +632,8 @@ while not done:
     # Messages
     START_TEXT = FONT_SM.render("Press space to start.", True, WHITE)
     SCORE = FONT_SM.render("Backpack:", True, WHITE)
+    END_TEXT = FONT_SM.render("You Escaped! Now go home and study!", True, WHITE)
+    REPLAY_TEXT = FONT_SM.render("(Or press Space to restart)", True, WHITE)
 
     # Draw game objects on-screen.
     if stage == START:
@@ -638,7 +646,7 @@ while not done:
             screen.blit(line, [screen.get_rect().centerx - int(line.get_width() / 2), y_val])
             y_val += 25
 
-    elif stage == PLAYING or stage == PAUSED:
+    elif stage == PLAYING or stage == PAUSED or stage == END:
         screen.fill(DARKER_GREY)
 
         if student.has_detention:
@@ -677,6 +685,9 @@ while not done:
     if stage == PAUSED:
         screen.blit(pause_text, [(WIDTH/2)-(pause_text.get_width()/2), (HEIGHT/2)-(pause_text.get_height()/2)])
 
+    if stage == END:
+        screen.blit(END_TEXT, [(WIDTH/2)-(END_TEXT.get_width()/2), (HEIGHT/2)-(END_TEXT.get_height()/2)])
+        screen.blit(REPLAY_TEXT[(WIDTH/2)-(REPLAY_TEXT.get_width()/2), (HEIGHT/2)-(REPLAY_TEXT.get_height()/2)-(REPLAY_TEXT.get_height())])
     # update screen
     pygame.display.update()
     clock.tick(FPS)
