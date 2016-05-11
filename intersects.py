@@ -60,3 +60,19 @@ def rect_rect(rect1, rect2):
                 left1 >= right2  or
                 bottom1 <= top2 or
                 top1 >= bottom2)
+
+def rect_absorbs_rect(rect1, rect2):
+    
+    left1 = rect1[0]
+    right1 = rect1[0] + rect1[2]
+    top1 = rect1[1]
+    bottom1 = rect1[1] + rect1[3]
+
+    left2 = rect2[0]
+    right2 = rect2[0] + rect2[2]
+    top2 = rect2[1]
+    bottom2 = rect2[1] + rect2[3]
+    
+    return ((left1 >= left2 and right1 <= right2 and top1 >= top2 and bottom1 <= bottom2) or
+            (left2 >= left1 and right2 <= right1 and top2 >= top1 and bottom2 <= bottom1))
+
