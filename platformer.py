@@ -112,29 +112,29 @@ class Student:
         return [self.x, self.y, self.w, self.h]
 
     def jump(self, platforms):
-        if not self.has_detention:
-            can_jump = False
 
-            self.y += 1
+        can_jump = False
 
-            student_rect = self.get_rect()
+        self.y += 1
 
-            #if intersects.rect_rect(student_rect, ground.get_rect()):
-                #can_jump = True
+        student_rect = self.get_rect()
 
-            for p in platforms:
-                platform_rect = p.get_rect()
+        #if intersects.rect_rect(student_rect, ground.get_rect()):
+            #can_jump = True
 
-                if intersects.rect_rect(student_rect, platform_rect):
-                    can_jump = True
+        for p in platforms:
+            platform_rect = p.get_rect()
 
-            if self.y + self.h >= HEIGHT:
+            if intersects.rect_rect(student_rect, platform_rect):
                 can_jump = True
 
-            if can_jump:
-                self.vy = -JUMP_POWER
+        if self.y + self.h >= HEIGHT:
+            can_jump = True
 
-            self.y -= 1
+        if can_jump:
+            self.vy = -JUMP_POWER
+
+        self.y -= 1
 
     def move(self, vx):
         self.vx = vx
@@ -289,7 +289,7 @@ class Student:
             if get_current_time() < self.has_detention:
                 student_rect = self.get_rect()
                 detention_rect = detention_rect.get_rect()
-                self.y = detention_rect[1] if student_rect[1] > detention_rect[1] else self.y
+                self.y = detention_rect[1] if student_rect[1] < detention_rect[1] else self.y
                 self.x = detention_rect[0] if student_rect[0] < detention_rect[0] else self.x
                 self.x = detention_rect[0] + detention_rect[2] - student_rect[2] \
                     if student_rect[0] + student_rect[2] > detention_rect[0] + detention_rect[2] \
@@ -537,7 +537,7 @@ def setup():
     bad_students = [OtherPeople(500, 311, bad_student_img),
                     OtherPeople(300, 111, bad_student_img)]
     inventory = []
-    detention_rect = areaRect(0, 736, WIDTH, HEIGHT)
+    detention_rect = areaRect(0, 700, WIDTH, HEIGHT)
     exit_rect = areaRect(800, 0, 200, 100)
 
     belongings[0].activate()
