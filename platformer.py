@@ -73,7 +73,7 @@ def draw_grid():
 
 
 def fix_inventory(inventory):
-    x_val = 400
+    x_val = 120
     y_val = 0
 
     for item in inventory:
@@ -87,7 +87,6 @@ def fix_inventory(inventory):
         item.img = graphic_absolute_resize(item.img, None, 40)
 
         x_val += item.img.get_width() + 15
-
 
 def get_current_time():
     return calendar.timegm(time.gmtime()) - TIME_MOD
@@ -244,7 +243,7 @@ class Student:
 
         self.y = detention_rect[2]
         self.x = random.randint(detention_rect[1], detention_rect[3])
-        self.stop()
+        self.vy = 0
 
     def process_bad_student(self, bad_student):
         student_rect = self.get_rect()
@@ -289,14 +288,11 @@ class Student:
             if get_current_time() < self.has_detention:
                 student_rect = self.get_rect()
                 detention_rect = detention_rect.get_rect()
-                self.y = detention_rect[1] if student_rect[1] < detention_rect[1] else self.y
-                self.x = detention_rect[0] if student_rect[0] < detention_rect[0] else self.x
-                self.x = detention_rect[0] + detention_rect[2] - student_rect[2] \
-                    if student_rect[0] + student_rect[2] > detention_rect[0] + detention_rect[2] \
-                    else self.x
-                self.y = detention_rect[1] + detention_rect[3] - student_rect[3] - 1 \
-                    if student_rect[1] + student_rect[3] > detention_rect[1] + detention_rect[3] \
-                    else self.y
+
+                if student_rect[1] < detention_rect[1]:
+                    self.y = detention_rect[1]
+                    self.vy = 0
+
                 print("detention")
             else:
                 self.has_detention = False
@@ -537,7 +533,7 @@ def setup():
     bad_students = [OtherPeople(500, 311, bad_student_img),
                     OtherPeople(300, 111, bad_student_img)]
     inventory = []
-    detention_rect = areaRect(0, 700, WIDTH, HEIGHT)
+    detention_rect = areaRect(0, 710, WIDTH, HEIGHT)
     exit_rect = areaRect(800, 0, 200, 100)
 
     belongings[0].activate()
