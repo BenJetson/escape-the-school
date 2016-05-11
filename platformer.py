@@ -244,6 +244,7 @@ class Student:
 
         self.y = detention_rect[2]
         self.x = random.randint(detention_rect[1], detention_rect[3])
+        self.stop()
 
     def process_bad_student(self, bad_student):
         student_rect = self.get_rect()
