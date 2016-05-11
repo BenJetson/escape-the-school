@@ -301,10 +301,11 @@ class Student:
                 self.has_detention = False
                 print("detention dismissed")
 
-    def process_exit(self, exit_rect):
+    def check_exit(self, exit_rect, belongings):
         exit_rect = exit_rect.get_rect()
 
-        if intersects.rect_rect(self.get_rect(), exit_rect):
+        if (intersects.rect_rect(self.get_rect(), exit_rect) and
+            len(belongings) == 0):
             print("exit!")
 
     def update(self, platforms, teachers, admin, bad_students, belongings, inventory, detention_rect, exit_rect):
@@ -313,7 +314,7 @@ class Student:
         self.process_detention(detention_rect)
         self.process_platforms(platforms)
         self.check_screen_edges()
-        self.process_exit(exit_rect)
+        self.check_exit(exit_rect, belongings)
         #self.check_ground()
         #self.process_coins(coins)
         self.process_teachers(teachers)
