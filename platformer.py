@@ -48,6 +48,10 @@ teacher_img = graphic_loader("img/teacher.png")
 admin_img = graphic_loader("img/admin.png")
 bad_student_img = graphic_loader("img/bad_student.png")
 
+#Background Images
+front_img = graphic_loader("img/schoolfront.png")
+commons_img = graphic_loader("img/commons.png")
+
 # Item Images
 laptop_img = graphic_loader("img/laptop.png")
 phone_img = graphic_loader("img/phone.png")
@@ -681,7 +685,7 @@ while not done:
 
     # Draw game objects on-screen.
     if stage == START:
-        screen.fill(DARKER_GREY)
+        screen.blit(front_img, [0, 0])
 
         x_val = 0
         y_val = 50
