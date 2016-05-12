@@ -54,7 +54,9 @@ card_img = graphic_loader("img/playing_card.png")
 staffbadge_img = graphic_loader("img/staff_badge.png")
 exit_img = graphic_loader("img/exit.png")
 iss_img = graphic_loader("img/iss.png")
-
+book_imgs = [graphic_loader("img/book1.png"),
+             graphic_loader("img/book2.png"),
+             graphic_loader("img/book3.png")]
 # Physics
 H_SPEED = 4
 JUMP_POWER = 8
@@ -408,9 +410,22 @@ class OtherPeople:
 
         return False
 
+    def check_screen_edges(self):
+        if self.x < 0:
+            self.x = 0
+        elif self.x + self.w > WIDTH:
+            self.x = WIDTH - self.w
+
+        if self.y < 0:
+            self.y = 0
+            self.vy = 0
+        elif self.y + self.h > HEIGHT:
+            self.y = HEIGHT - self.h
+
     def update(self, platforms):
         self.process_touchability()
         self.move_and_process_platforms(platforms)
+        self.check_screen_edges()
 
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
@@ -497,11 +512,30 @@ class areaRect:
         return [self.x, self.y, self.w, self.h]
 
 
+class Book:
+
+    def __init__(self, x, y, book_imgs):
+        self.x = x
+        self.y = y
+        self.img = random.choice(book_imgs)
+
+        self.w = self.img.get_width()
+        self.h = self.img.get_height()
+
+        self.value = 1
+
+    def get_rect(self):
+        return [self.x, self.y, self.w, self.h]
+
+    def draw(self):
+        screen.blit(self.img, [self.x, self.y])
+
+
 def setup():
     global student, platforms, background_objects, \
         belongings, teachers, admins, bad_students, \
         done, score, stage, inventory, exit_rect, \
-        detention_rect, iss_signs
+        detention_rect, iss_signs, homework
 
     student = Student(0, 0, student_img)
     platforms = [Platform(0, 225, 150, 10),
@@ -534,6 +568,7 @@ def setup():
               OtherPeople(950, 636, admin_img)]
     bad_students = [OtherPeople(500, 311, bad_student_img),
                     OtherPeople(300, 111, bad_student_img)]
+    homework = [Book(100, 100, book_imgs)]
     inventory = []
     detention_rect = areaRect(0, 700, WIDTH, HEIGHT)
     exit_rect = areaRect(975, 0, 25, 100)
@@ -658,6 +693,9 @@ while not done:
         for b in belongings:
             if b.is_visible:
                 b.draw()
+
+        for h in homework:
+            h.draw()
 
         for a in admins:
             a.draw()
