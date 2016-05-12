@@ -628,6 +628,7 @@ while not done:
             if stage == END:
                 if event.key ==pygame.K_SPACE:
                     stage = START
+                    setup()
 
             if stage == PAUSED:
                 if event.key == pygame.K_SPACE:
