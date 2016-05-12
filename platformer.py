@@ -663,8 +663,7 @@ while not done:
     # Messages
     START_TEXT = FONT_SM.render("Press space to start.", True, WHITE)
     SCORE = FONT_SM.render("Backpack:", True, WHITE)
-    END_TEXT = FONT_SM.render("You Escaped! Now go home and study!", True, WHITE)
-    REPLAY_TEXT = FONT_SM.render("(Or press Space to restart)", True, WHITE)
+    END_TEXT = FONT_SM.render("You Escaped! Now go home and study!(Or press Space to restart)", True, WHITE)
 
     # Draw game objects on-screen.
     if stage == START:
@@ -721,7 +720,6 @@ while not done:
 
     if stage == END:
         screen.blit(END_TEXT, [(WIDTH/2)-(END_TEXT.get_width()/2), (HEIGHT/2)-(END_TEXT.get_height()/2)])
-        screen.blit(REPLAY_TEXT[(WIDTH/2)-(REPLAY_TEXT.get_width()/2), (HEIGHT/2)-(REPLAY_TEXT.get_height()/2)-(REPLAY_TEXT.get_height())])
     # update screen
     pygame.display.update()
     clock.tick(FPS)
