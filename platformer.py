@@ -5,6 +5,7 @@ import random
 import intersects
 import calendar
 import time
+import math
 from graphic_handler import *
 
 pygame.init()
@@ -56,7 +57,9 @@ exit_img = graphic_loader("img/exit.png")
 iss_img = graphic_loader("img/iss.png")
 book_imgs = [graphic_loader("img/book1.png"),
              graphic_loader("img/book2.png"),
-             graphic_loader("img/book3.png")]
+             graphic_loader("img/book3.png"),
+             graphic_loader("img/book4.png"),
+             graphic_loader("img/book5.png")]
 # Physics
 H_SPEED = 4
 JUMP_POWER = 8
@@ -216,7 +219,7 @@ class Student:
         for c in coins_to_remove:
             coins.remove(c)
 
-    def process_teachers(self, teachers):
+    def process_teachers(self, teachers, homework):
         student_rect = self.get_rect()
 
         is_touching = False
@@ -224,10 +227,11 @@ class Student:
         for t in teachers:
 
             if t.is_touching(student_rect):
-                    print("bonk!")
-                    # is_touching = True
-                    self.change_speed_temp(get_current_time() + 5, H_SPEED/2)
-            
+                print("bonk!")
+                # is_touching = True
+                # self.change_speed_temp(get_current_time() + 5, H_SPEED/2)
+                homework.append(Book())
+
         #print(self.speed)
 
     def process_admins(self, admins, detention_rect):
@@ -273,15 +277,20 @@ class Student:
                     if len(belongings) > 0:
                         belongings[0].activate()
 
-    def process_speed_changes(self):
+    def process_speed_changes(self, homework_books):
         self.speed = H_SPEED
         current_time = get_current_time()
+
+        self.speed -= math.ceil(len(homework_books)/2)
+        self.speed = 1 if self.speed < 1 else self.speed
 
         for p in self.temp_speed_changes:
             if not (p['expiryTime'] < current_time):
                 self.speed -= p['changeAmount']
             else:
                 self.temp_speed_changes.remove(p)
+
+        self.speed = 0 if self.speed < 0 else self.speed
 
         # self.speed = 1 if self.speed < 1 else self.speed
 
@@ -309,8 +318,9 @@ class Student:
             stage = END
             print("exit!")
 
-    def update(self, platforms, teachers, admin, bad_students, belongings, inventory, detention_rect, exit_rect):
-        self.process_speed_changes()
+    def update(self, platforms, teachers, admin, bad_students, belongings, inventory,
+               detention_rect, exit_rect, homework_books):
+        self.process_speed_changes(homework_books)
         self.apply_gravity()
         self.process_detention(detention_rect)
         self.process_platforms(platforms)
@@ -318,7 +328,7 @@ class Student:
         self.check_exit(exit_rect, belongings)
         #self.check_ground()
         #self.process_coins(coins)
-        self.process_teachers(teachers)
+        self.process_teachers(teachers, homework_books)
         self.process_admins(admin, detention_rect)
         self.process_bad_student(bad_students)
         self.process_belongings(belongings, inventory)
@@ -514,9 +524,11 @@ class areaRect:
 
 class Book:
 
-    def __init__(self, x, y, book_imgs):
-        self.x = x
-        self.y = y
+    def __init__(self):
+        global homework_books
+
+        self.x = (40 + (len(homework_books) * 42))
+        self.y = 50
         self.img = random.choice(book_imgs)
 
         self.w = self.img.get_width()
@@ -535,7 +547,7 @@ def setup():
     global student, platforms, background_objects, \
         belongings, teachers, admins, bad_students, \
         done, score, stage, inventory, exit_rect, \
-        detention_rect, iss_signs, homework
+        detention_rect, iss_signs, homework_books
 
     student = Student(0, 0, student_img)
     platforms = [Platform(0, 225, 150, 10),
@@ -546,7 +558,7 @@ def setup():
                  Platform(450, 375, 150, 10),
                  Platform(0, 700, 150, 10),
                  Platform(850, 700, 150, 10),
-                 Platform(400, 700, 150, 10),
+                 Platform(425, 700, 150, 10),
                  Platform(800, 100, 200, 10),
                  Platform(650, 275, 150, 10),
                  Platform(300, 175, 150, 10),
@@ -568,7 +580,7 @@ def setup():
               OtherPeople(950, 636, admin_img)]
     bad_students = [OtherPeople(500, 311, bad_student_img),
                     OtherPeople(300, 111, bad_student_img)]
-    homework = [Book(100, 100, book_imgs)]
+    homework_books = []
     inventory = []
     detention_rect = areaRect(0, 700, WIDTH, HEIGHT)
     exit_rect = areaRect(975, 0, 25, 100)
@@ -650,7 +662,8 @@ while not done:
     # game logic
     # player.update(ground, platforms)
     if stage == PLAYING:
-        student.update(platforms, teachers, admins, bad_students, belongings, inventory, detention_rect, exit_rect)
+        student.update(platforms, teachers, admins, bad_students, belongings,
+                       inventory, detention_rect, exit_rect, homework_books)
 
         for t in teachers:
             t.update(platforms)
@@ -694,7 +707,7 @@ while not done:
             if b.is_visible:
                 b.draw()
 
-        for h in homework:
+        for h in homework_books:
             h.draw()
 
         for a in admins:
