@@ -69,7 +69,7 @@ H_SPEED = 4
 JUMP_POWER = 8
 GRAVITY = 0.2
 TERMINAL_VELOCITY = 10
-SHOW_GRID = True
+SHOW_GRID = False
 TIME_MOD = 0
 
 
@@ -579,9 +579,12 @@ def setup():
                   Belongings(25, 440, staffbadge_img),
                   Belongings(25, 185, card_img)]
     teachers = [OtherPeople(0, 411, teacher_img),
-                OtherPeople(450, 636, teacher_img)]
+                OtherPeople(450, 636, teacher_img),
+                OtherPeople(805, 386, teacher_img),
+                OtherPeople(60, 161, teacher_img)]
     admins = [OtherPeople(295, 486, admin_img),
-              OtherPeople(950, 636, admin_img)]
+              OtherPeople(950, 636, admin_img),
+              OtherPeople(580, 86, admin_img)]
     bad_students = [OtherPeople(500, 311, bad_student_img),
                     OtherPeople(300, 111, bad_student_img)]
     homework_books = []
