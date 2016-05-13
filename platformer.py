@@ -694,8 +694,8 @@ while not done:
             screen.blit(line, [screen.get_rect().centerx - int(line.get_width() / 2), y_val])
             y_val += 25
 
-    elif stage == PLAYING or stage == PAUSED or stage == END:
-        screen.fill(DARKER_GREY)
+    elif stage == PLAYING or stage == PAUSED:
+        screen.blit(commons_img, [0, 0])
 
         if student.has_detention:
             for i in iss_signs:
@@ -737,6 +737,7 @@ while not done:
         screen.blit(pause_text, [(WIDTH/2)-(pause_text.get_width()/2), (HEIGHT/2)-(pause_text.get_height()/2)])
 
     if stage == END:
+        screen.blit(front_img, [0, 0])
         screen.blit(END_TEXT, [(WIDTH/2)-(END_TEXT.get_width()/2), (HEIGHT/2)-(END_TEXT.get_height()/2)])
     # update screen
     pygame.display.update()
