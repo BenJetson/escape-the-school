@@ -67,7 +67,7 @@ book_imgs = [graphic_loader("img/book1.png"),
 # Physics
 H_SPEED = 4
 JUMP_POWER = 8
-GRAVITY = 0.2
+GRAVITY = 0.165
 TERMINAL_VELOCITY = 10
 SHOW_GRID = False
 TIME_MOD = 0
@@ -119,7 +119,7 @@ class Student:
     def get_rect(self):
         return [self.x, self.y, self.w, self.h]
 
-    def jump(self, platforms):
+    def jump(self, platforms, homework):
 
         can_jump = False
 
@@ -141,6 +141,13 @@ class Student:
 
         if can_jump:
             self.vy = -JUMP_POWER
+
+            if len(homework) > 2:
+                self.change_speed_temp(get_current_time() + 1, -2)
+            # if self.vx < 0:
+            #     self.x -= 15
+            # elif self.vx > 0:
+            #     self.x += 15
 
         self.y -= 1
 
@@ -234,7 +241,8 @@ class Student:
                 print("bonk!")
                 # is_touching = True
                 # self.change_speed_temp(get_current_time() + 5, H_SPEED/2)
-                homework.append(Book())
+                if len(homework) < 15:
+                    homework.append(Book())
 
         #print(self.speed)
 
@@ -531,7 +539,7 @@ class Book:
     def __init__(self):
         global homework_books
 
-        self.x = (40 + (len(homework_books) * 42))
+        self.x = (120 + (len(homework_books) * 42))
         self.y = 50
         self.img = random.choice(book_imgs)
 
@@ -636,9 +644,9 @@ while not done:
                     
             if stage == PLAYING:
                 if (event.key == pygame.K_SPACE or
-                            event.key == pygame.K_UP or
-                            event.key == pygame.K_w):
-                     student.jump(platforms)
+                        event.key == pygame.K_UP or
+                        event.key == pygame.K_w):
+                     student.jump(platforms, homework_books)
                 elif event.key == pygame.K_p:
                     stage = PAUSED
                     PAUSE_TIME = get_current_time()
