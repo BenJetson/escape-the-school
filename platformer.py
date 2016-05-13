@@ -458,7 +458,7 @@ class OtherPeople:
 
 class Platform:
 
-    def __init__(self, x, y, w, h, color=RED):
+    def __init__(self, x, y, w, h, color=BLACK):
         self.x = x
         self.y = y
         self.w = w
@@ -693,6 +693,7 @@ while not done:
     START_TEXT = FONT_SM.render("Press space to start.", True, WHITE)
     SCORE = FONT_SM.render("Backpack:", True, WHITE)
     END_TEXT = FONT_SM.render("You Escaped! Now go home and study!(Or press Space to restart)", True, WHITE)
+    HOMEWORK = FONT_SM.render("Homework:", True, WHITE)
 
     # Draw game objects on-screen.
     if stage == START:
@@ -743,6 +744,7 @@ while not done:
         student.draw()
 
         screen.blit(SCORE, [0, 0])
+        screen.blit(HOMEWORK, [0, 50])
 
     if stage == PAUSED:
         screen.blit(pause_text, [(WIDTH/2)-(pause_text.get_width()/2), (HEIGHT/2)-(pause_text.get_height()/2)])
