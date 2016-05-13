@@ -27,7 +27,7 @@ WHITE = (255, 255, 255)
 LIGHT_GREY = (220, 220, 220)
 DARKER_GREY = (150, 150, 150)
 RED = (175, 0, 0)
-PASTEL_BLUE = ()
+PASTEL_BLUE = (26, 184, 237)
 
 # Fonts
 FONT_SM = pygame.font.Font(None, 30)
@@ -458,7 +458,7 @@ class OtherPeople:
 
 class Platform:
 
-    def __init__(self, x, y, w, h, color=BLACK):
+    def __init__(self, x, y, w, h, color=PASTEL_BLUE):
         self.x = x
         self.y = y
         self.w = w
